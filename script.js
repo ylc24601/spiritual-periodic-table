@@ -181,12 +181,6 @@ function buildCompounds() {
   });
 }
 
-function toggleGuide(btn) {
-  const body = document.getElementById('guideBody');
-  const isOpen = btn.classList.contains('open');
-  btn.classList.toggle('open', !isOpen);
-  body.style.display = isOpen ? 'none' : 'block';
-}
 
 function filter(type, btn, onClass) {
   document.querySelectorAll('.fbtn').forEach(b => b.className='fbtn');
