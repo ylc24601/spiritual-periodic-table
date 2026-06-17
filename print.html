@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>屬靈元素週期表 · 雙面列印</title>
+  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Nunito:wght@400;700;900&family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --action-main:   #FF7F6B;
+      --action-deep:   #E05A44;
+      --action-pale:   #FFF0ED;
+      --struct-main:   #F0A840;
+      --struct-deep:   #C07820;
+      --struct-pale:   #FFF8EC;
+      --rel-main:      #4EC8B0;
+      --rel-deep:      #2A9880;
+      --rel-pale:      #EDFAF7;
+      --stab-main:     #8AAEE0;
+      --stab-deep:     #4A78C0;
+      --stab-pale:     #EEF3FC;
+      --gray1:  #f0efec;
+      --gray2:  #d8d4cc;
+      --gray3:  #a09890;
+      --gray4:  #605850;
+      --dark:   #2a2420;
+    }
+
+    @page { size: A4 portrait; margin: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: white;
+      color: var(--dark);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ── PAGE LAYOUT ── */
+    /* Each .page is one A4 sheet side.
+       Pages are interleaved: front1, back1, front2, back2 ...
+       so the printer's duplex mode prints front/back on the same sheet. */
+    .page {
+      width: 210mm;
+      height: 297mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 5mm;
+      padding: 12mm;
+      page-break-after: always;
+      break-after: page;
+      position: relative;
+    }
+    .page:last-child { page-break-after: avoid; break-after: avoid; }
+
+    /* Faint cut marks at card corners */
+    .page::before, .page::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+    }
+
+    /* ── FRONT CARD ── */
+    .pfront {
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #dedad4;
+      background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .pcolor-band {
+      flex: 0 0 52%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 8px;
+    }
+    .p-action    .pcolor-band { background: linear-gradient(155deg, var(--action-main), var(--action-deep)); }
+    .p-structural .pcolor-band { background: linear-gradient(155deg, var(--struct-main), var(--struct-deep)); }
+    .p-relational .pcolor-band { background: linear-gradient(155deg, var(--rel-main), var(--rel-deep)); }
+    .p-stabilizing .pcolor-band { background: linear-gradient(155deg, var(--stab-main), var(--stab-deep)); }
+
+    .p-atomic-no {
+      position: absolute; top: 7px; left: 9px;
+      font-family: 'Varela Round', sans-serif;
+      font-size: 15pt; font-weight: 300;
+      color: rgba(255,255,255,0.65); line-height: 1;
+    }
+    .p-zh-name {
+      position: absolute; top: 7px; right: 9px;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 15pt; font-weight: 300;
+      color: rgba(255,255,255,0.82); line-height: 1;
+    }
+    .p-sym {
+      font-family: 'Varela Round', sans-serif;
+      font-size: 56pt; font-weight: 900;
+      color: white; line-height: 1;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.18);
+      margin-top: 4px;
+    }
+    .p-eng-name {
+      font-family: 'Varela Round', sans-serif;
+      font-size: 13pt; font-weight: 300;
+      color: rgba(255,255,255,0.72);
+      letter-spacing: 0.1em;
+      margin-top: 3px;
+    }
+
+    .pcard-lower {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      background: white;
+    }
+    .p-type-pill {
+      font-size: 11pt; font-weight: 600;
+      padding: 3px 12px;
+      border-radius: 10px;
+      margin-bottom: 6px;
+    }
+    .p-action    .p-type-pill { background: var(--action-pale);  color: var(--action-deep);  }
+    .p-structural .p-type-pill { background: var(--struct-pale);  color: var(--struct-deep);  }
+    .p-relational .p-type-pill { background: var(--rel-pale);     color: var(--rel-deep);     }
+    .p-stabilizing .p-type-pill { background: var(--stab-pale);  color: var(--stab-deep);    }
+
+    .p-divider { width: 24px; height: 2px; border-radius: 2px; margin-bottom: 5px; }
+    .p-action    .p-divider { background: var(--action-main); }
+    .p-structural .p-divider { background: var(--struct-main); }
+    .p-relational .p-divider { background: var(--rel-main); }
+    .p-stabilizing .p-divider { background: var(--stab-main); }
+
+    .p-card-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 19pt; font-weight: 700;
+      text-align: center; line-height: 1.5;
+      color: var(--dark);
+    }
+
+    /* ── BACK CARD ── */
+    .pback {
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #dedad4;
+      background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .pback-header {
+      padding: 8px 10px 6px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+    .p-action    .pback-header { background: var(--action-pale); }
+    .p-structural .pback-header { background: var(--struct-pale); }
+    .p-relational .pback-header { background: var(--rel-pale); }
+    .p-stabilizing .pback-header { background: var(--stab-pale); }
+
+    .pback-badge {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Varela Round', sans-serif;
+      font-size: 17pt; font-weight: 900;
+      color: white; flex-shrink: 0;
+    }
+    .p-action    .pback-badge { background: var(--action-main); }
+    .p-structural .pback-badge { background: var(--struct-main); }
+    .p-relational .pback-badge { background: var(--rel-main); }
+    .p-stabilizing .pback-badge { background: var(--stab-main); }
+
+    .pback-title-block { flex: 1; min-width: 0; }
+    .pbtitle {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 12pt; font-weight: 700;
+      color: var(--dark); line-height: 1.35;
+    }
+    .pbsub {
+      font-size: 9pt; color: var(--gray3);
+      font-family: 'Varela Round', sans-serif;
+      margin-top: 1px;
+    }
+    .pbperson {
+      font-size: 9pt; color: var(--gray3);
+      text-align: right; line-height: 1.3;
+      flex-shrink: 0; max-width: 38%;
+    }
+    .pbperson-note { font-size: 7pt; opacity: 0.8; display: block; }
+
+    .pback-divider {
+      width: calc(100% - 20px);
+      height: 1px;
+      background: var(--gray2);
+      margin: 0 10px 5px;
+      flex-shrink: 0;
+    }
+
+    .pback-body {
+      flex: 1;
+      padding: 0 10px 8px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .pblabel {
+      font-size: 10pt; font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--gray3);
+      margin: 7px 0 2px;
+    }
+    .pblabel:first-child { margin-top: 0; }
+    .pbtext {
+      font-size: 13pt;
+      color: var(--gray4);
+      line-height: 1.65;
+    }
+    .pbweak {
+      font-size: 13pt;
+      color: var(--gray3);
+      line-height: 1.65;
+      font-style: italic;
+    }
+    .pbverse {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 11.5pt;
+      line-height: 1.65;
+      padding: 5px 8px;
+      border-radius: 5px;
+      margin-top: 7px;
+    }
+    .p-action    .pbverse { background: var(--action-pale); color: var(--action-deep); }
+    .p-structural .pbverse { background: var(--struct-pale); color: var(--struct-deep); }
+    .p-relational .pbverse { background: var(--rel-pale);   color: var(--rel-deep);   }
+    .p-stabilizing .pbverse { background: var(--stab-pale); color: var(--stab-deep);  }
+
+    /* ── SCREEN PREVIEW ── */
+    @media screen {
+      body { background: #6b6b6b; padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+      .page { background: white; box-shadow: 0 4px 24px rgba(0,0,0,0.35); margin-bottom: 4px; }
+      .page-label {
+        font-family: sans-serif; font-size: 12px; color: #ccc;
+        align-self: flex-start; margin-left: calc(50% - 105mm);
+        margin-bottom: 4px; margin-top: 12px;
+      }
+    }
+    @media print { .page-label { display: none; } }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script src="script.js"></script>
+<script>
+const TYPE_LABEL = {
+  action:     '🔥 行動型',
+  structural: '🏛️ 支撐型',
+  relational: '🌿 連結型',
+  stabilizing:'🕊️ 穩定型'
+};
+
+function renderFront(el) {
+  const d = document.createElement('div');
+  d.className = `pfront p-${el.type}`;
+  d.innerHTML = `
+    <div class="pcolor-band">
+      <span class="p-atomic-no">${el.no}</span>
+      <span class="p-zh-name">${el.zh}</span>
+      <div class="p-sym">${el.sym}</div>
+      <div class="p-eng-name">${el.eng}</div>
+    </div>
+    <div class="pcard-lower">
+      <div class="p-type-pill">${TYPE_LABEL[el.type]}</div>
+      <div class="p-divider"></div>
+      <div class="p-card-title">${el.title}</div>
+    </div>`;
+  return d;
+}
+
+function renderBack(el) {
+  const d = document.createElement('div');
+  d.className = `pback p-${el.type}`;
+  d.innerHTML = `
+    <div class="pback-header">
+      <div class="pback-badge">${el.sym}</div>
+      <div class="pback-title-block">
+        <div class="pbtitle">${el.title}</div>
+        <div class="pbsub">${el.zh} · ${el.eng} · ${el.no}</div>
+      </div>
+      ${el.person ? `<div class="pbperson">📖 ${el.person}${el.personNote ? `<span class="pbperson-note">${el.personNote}</span>` : ''}</div>` : ''}
+    </div>
+    <div class="pback-divider"></div>
+    <div class="pback-body">
+      <div class="pblabel">👥 適合對象</div>
+      <div class="pbtext">${el.target}</div>
+      <div class="pblabel">⚗ 科學特性</div>
+      <div class="pbtext">${el.sci}</div>
+      <div class="pblabel">✝ 屬靈特質</div>
+      <div class="pbtext">${el.sp}</div>
+      <div class="pblabel">⚠ 留意</div>
+      <div class="pbweak">${el.weak}</div>
+      <div class="pbverse">${el.verse.replace(/\n/g, ' ')}</div>
+    </div>`;
+  return d;
+}
+
+const root = document.getElementById('root');
+
+// 4 cards per sheet, 4 sheets = 16 cards
+// Long-side duplex: flipping on the left edge swaps columns.
+// Front grid positions: [0][1] / [2][3]
+// Back grid positions (to align after long-side flip): [1_back][0_back] / [3_back][2_back]
+// Pages interleaved as front/back pairs so duplex printing puts them on the same sheet.
+
+const PER_PAGE = 4;
+const sheets = Math.ceil(elements.length / PER_PAGE);
+
+for (let s = 0; s < sheets; s++) {
+  const batch = elements.slice(s * PER_PAGE, s * PER_PAGE + PER_PAGE);
+
+  // Label (screen only)
+  const lf = document.createElement('div');
+  lf.className = 'page-label';
+  lf.textContent = `第 ${s + 1} 張紙・正面`;
+  root.appendChild(lf);
+
+  // Front page
+  const frontPage = document.createElement('div');
+  frontPage.className = 'page';
+  batch.forEach(el => frontPage.appendChild(renderFront(el)));
+  root.appendChild(frontPage);
+
+  // Label (screen only)
+  const lb = document.createElement('div');
+  lb.className = 'page-label';
+  lb.textContent = `第 ${s + 1} 張紙・背面（長邊翻面對齊）`;
+  root.appendChild(lb);
+
+  // Back page — columns mirrored: [0,1,2,3] → [1,0,3,2]
+  const backPage = document.createElement('div');
+  backPage.className = 'page';
+  const mirror = [batch[1], batch[0], batch[3], batch[2]];
+  mirror.forEach(el => {
+    if (el) {
+      backPage.appendChild(renderBack(el));
+    } else {
+      backPage.appendChild(document.createElement('div')); // empty slot
+    }
+  });
+  root.appendChild(backPage);
+}
+</script>
+</body>
+</html>
