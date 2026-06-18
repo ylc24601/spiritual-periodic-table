@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>屬靈元素卡 · 活潑明亮 · 列印版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Nunito:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Noto Sans TC',sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  @page { size:A4 portrait; margin:0; }
+  @media screen {
+    body { background:#6b6b6b; padding:26px 0 40px; }
+    .sheet { box-shadow:0 4px 24px rgba(0,0,0,.35); margin:0 auto 6px; }
+    .slabel { font:500 12px sans-serif; color:#d6d2cb; width:210mm; margin:18px auto 5px; padding-left:2mm; }
+    .slabel:first-child { margin-top:0; }
+  }
+  @media print {
+    .slabel { display:none; }
+    body { background:#fff; padding:0; }
+    .sheet { box-shadow:none !important; margin:0 !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+'use strict';
+const ELEMENTS = [
+  {sym:'Na',no:11,zh:'鈉',eng:'Sodium',type:'action',title:'直率衝動的<br>開拓者',target:'急性子、開拓型同工',sci:'活潑、遇水劇烈反應、高能量',sp:'說做就做的行動派；直來直往沒有惡意；遇見呼召就跳出船去，是開拓者的本色。',weak:'熱情是你的燃料；學習在行動前多聽一句，是你的成長功課。',verse:'你來吧。彼得就從船上下去，在水面上走，要到耶穌那裡去。\n—馬太福音 14:29',person:'彼得'},
+  {sym:'O',no:8,zh:'氧',eng:'Oxygen',type:'action',title:'熱情溫暖的<br>激勵者',target:'活潑熱心的服事者',sci:'助燃、維持生命必需、活性大',sp:'氣氛製造機；喜歡鼓勵別人、搧風點火讓服事更火熱；教會不可或缺。',weak:'熱情是你的恩賜；學習讓火焰穩燃而非瞬間爆發，才能長久助燃他人。',verse:'趁著白日，我們必須做那差我來者的工。\n—約翰福音 9:4',person:'巴拿巴'},
+  {sym:'P',no:15,zh:'磷',eng:'Phosphorus',type:'action',title:'燃燒自己的<br>奉獻者',target:'有使命感、容易過度付出的同工',sci:'火柴關鍵成分、自燃傾向、傳遞能量（ATP）',sp:'甘心燃燒自己成就他人；充滿使命感；把自己交給神，祂會在你快燒盡前差天使來。',weak:'燃燒是你的方式；學習在休止符裡聽見神的聲音，才能讓使命走得更遠。',verse:'起來吃吧，你當走的路甚遠。\n—列王記上 19:7',person:'以利亞'},
+  {sym:'Ti',no:22,zh:'鈦',eng:'Titanium',type:'action',title:'跨界先鋒的<br>改革者',target:'跨界服事的職場基督徒',sci:'輕盈卻強韌、抗腐蝕、應用於航太與醫療',sp:'在不同領域見證信仰；勇於進入陌生環境；兼具柔軟與剛強。',weak:'跨界是你的恩賜；學習在群體中謙遜同行，讓果實比一個人更豐盛。',verse:'我靠著那加給我力量的，凡事都能做。\n—腓立比書 4:13',person:'但以理'},
+  {sym:'Au',no:79,zh:'金',eng:'Gold',type:'structural',title:'歷久彌新的<br>智慧者',target:'經歷過風浪與試練的同工',sci:'抗腐蝕、延展性佳、不怕火煉',sp:'經歷風浪信心依然堅定；話語寶貴能給人指引；心胸寬大具包容性。',weak:'穩健是你的智慧；學習在適當時機說出經驗與想法，是你給他人的禮物。',verse:'祂試煉我之後，我必如精金。\n—約伯記 23:10',person:'約伯'},
+  {sym:'Fe',no:26,zh:'鐵',eng:'Iron',type:'structural',title:'堅定剛強的<br>建造者',target:'核心同工、負責人',sci:'建材骨架、具磁性、若不保養會生鏽',sp:'承擔重任的支柱；堅定剛強有條理；需要聖靈油膏抹與同伴消磁放鬆。',weak:'剛強是你的呼召；學習開口讓人關顧你，承擔才能更長久有力。',verse:'我也專心修造這城牆，並沒有置買田地。\n—尼希米記 5:16',person:'尼希米'},
+  {sym:'Ca',no:20,zh:'鈣',eng:'Calcium',type:'structural',title:'默默支撐的<br>守護者',target:'喜歡幕後支持、成全他人的人',sci:'骨骼基礎、隱藏但支撐全體',sp:'不愛舞台燈光，喜歡幕後支持；成全別人；教會結構的關鍵。',weak:'幕後是你的位置；學習偶爾讓人看見你的付出，接受感謝也是一種服事。',verse:'身上肢體人以為軟弱的，更是不可少的。\n—哥林多前書 12:22',person:'馬大'},
+  {sym:'Si',no:14,zh:'矽',eng:'Silicon',type:'structural',title:'理性穩重的<br>思考者',target:'喜好邏輯思考與研讀聖經的人',sci:'沙子主成分、晶片基石、耐高溫堅硬',sp:'信仰根基堅定的磐石；邏輯清晰能處理複雜問題；幕後承載重任運作事工。',weak:'邏輯是你的磐石；學習讓感動帶你說話，才能打動不只是頭腦的人。',verse:'把房子蓋在磐石上。\n—馬太福音 7:24',person:'路加'},
+  {sym:'C',no:6,zh:'碳',eng:'Carbon',type:'relational',title:'適應力強的<br>連結者',target:'公關型、適應力強的人物',sci:'多變（石墨或鑽石）、有機生命基礎、易鍵結',sp:'跨世代的橋樑；多才多藝能適應不同服事崗位；為了福音向什麼人就作什麼樣的人。',weak:'靈活是你的橋樑；定期停下來問我是誰，讓每一次連結都更有根基。',verse:'向什麼樣的人，我就作什麼樣的人。\n—哥林多前書 9:22',person:'保羅'},
+  {sym:'Cu',no:29,zh:'銅',eng:'Copper',type:'relational',title:'溫暖傳遞的<br>協調者',target:'熱心助人或閱歷豐富者',sci:'導電導熱佳、會生成銅綠保護層',sp:'熱心傳遞愛的溫暖；善於溝通協調；歲月痕跡是智慧的保護層。',weak:'協調是你的溫度；學習讓對方自己走出那一步，是愛的成熟。',verse:'要用愛心說誠實話。\n—以弗所書 4:15',person:'百基拉'},
+  {sym:'H',no:1,zh:'氫',eng:'Hydrogen',type:'relational',title:'單純謙卑的<br>補位者',target:'默默付出的基礎同工',sci:'宇宙最輕最多、水（H₂O）的基礎',sp:'單純正直；默默補位的基礎；渴慕與人連結、不愛落單。',weak:'謙卑是你的美德；學習讓人看見你的需要，真正的團契是彼此承載。',verse:'凡自卑的，必升為高。\n—路加福音 14:11',person:'路得'},
+  {sym:'K',no:19,zh:'鉀',eng:'Potassium',type:'relational',title:'敏銳感受的<br>禱告者',target:'禱告組、對屬靈感應敏銳的人',sci:'維持細胞電位、心臟節律的關鍵',sp:'靈裡敏銳、感受群體的心跳；禱告事奉的核心；若缺席教會就節律失調。',weak:'敏銳是你的恩賜；學習為自己的心設立界限，禱告才能更可持續。',verse:'我晝夜不住地為你禱告。\n—提摩太後書 1:3',person:'哈拿'},
+  {sym:'He',no:2,zh:'氦',eng:'Helium',type:'stabilizing',title:'和平喜樂的<br>觀察者',target:'內向、以和為貴、因知足而平靜的人',sci:'惰性氣體、電子層完全自足、輕盈不與外界鍵結',sp:'情緒穩定不愛爭吵；自足而安靜，是群體裡不可少的定海針；單純喜樂因知足而選擇安靜。',weak:'平靜是你的禮物；學習在適當時刻開口，你的一句話往往比你想像的更有分量。',verse:'敬虔加上知足的心便是大利了。\n—提摩太前書 6:6',person:'馬利亞'},
+  {sym:'N',no:7,zh:'氮',eng:'Nitrogen',type:'stabilizing',title:'沉穩內斂的<br>平衡者',target:'淡定、默默陪伴、結構性存在的人',sci:'佔空氣78%、無色無味、稀釋氧氣防暴衝',sp:'情緒調節者，讓氣氛冷靜；低調陪伴是結構性的存在；話語是別人成長的養分。',weak:'沉穩是你的結構；學習主動表達在場，讓人感受到你的陪伴是真實的溫度。',verse:'至於我，斷不停止為你們禱告；我必以善道正路指教你們。\n—撒母耳記上 12:23',person:'撒母耳'},
+  {sym:'Ag',no:47,zh:'銀',eng:'Silver',type:'stabilizing',title:'反映基督的<br>自省者',target:'在意言行、經常自省的人',sci:'反光能力最強、遇髒空氣易變黑需擦拭',sp:'生命反映基督樣式；對罪敏感、經常自我省察悔改；溫柔貴重。',weak:'敏銳的自省是你的特質；學習在恩典中站立，省察是成長的起點而非定罪的終點。',verse:'我們眾人既然敞著臉，得以看見主的榮光，好像從鏡子裡返照。\n—哥林多後書 3:18',person:'大衛'},
+  {sym:'Cl',no:17,zh:'氯',eng:'Chlorine',type:'stabilizing',title:'真理的聖潔<br>守望者',target:'講話直率、黑白分明的人',sci:'氣味刺鼻、專門殺菌消毒',sp:'黑白分明、對真理有高標準；直言不諱的保護者；需要恩典的鈉來中和成鹽。',weak:'守護真理是你的呼召；學習讓真話帶著溫度，讓人感受到你說的是愛而非審判。',verse:'你們的話要常常帶著和氣，好像用鹽調和。\n—歌羅西書 4:6',person:'施洗約翰'}
+];
+
+const THEME = {
+  action:      ['#FF7F6B','#E05A44','#FFF0ED'],
+  structural:  ['#F0A840','#C07820','#FFF8EC'],
+  relational:  ['#4EC8B0','#2A9880','#EDFAF7'],
+  stabilizing: ['#8AAEE0','#4A78C0','#EEF3FC']
+};
+const TYPE_META = {
+  action:      {name:'行動型', emoji:'🔥'},
+  structural:  {name:'支撐型', emoji:'🏛️'},
+  relational:  {name:'連結型', emoji:'🌿'},
+  stabilizing: {name:'穩定型', emoji:'🕊️'}
+};
+
+function buildCard(el) {
+  const t = THEME[el.type];
+  const m = TYPE_META[el.type];
+  const parts = el.title.split('<br>');
+  let vtext = el.verse, vref = '';
+  const i = el.verse.indexOf('\n—');
+  if (i !== -1) { vtext = el.verse.slice(0, i); vref = el.verse.slice(i + 1); }
+  return Object.assign({}, el, {
+    c: t[0], cDeep: t[1], cPale: t[2],
+    gradient: 'linear-gradient(155deg,' + t[0] + ',' + t[1] + ')',
+    typeName: m.name, typeEmoji: m.emoji,
+    titleA: parts[0], titleB: parts[1] || '',
+    verseText: vtext, verseRef: vref
+  });
+}
+
+function frontCard(c) {
+  return '<div style="height:100%;background:#fff;border:1px solid #E0DACF;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 4px rgba(0,0,0,.08);">'
+    + '<div style="flex:0 0 52%;position:relative;background:' + c.gradient + ';display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6mm;">'
+      + '<span style="position:absolute;top:5mm;left:6mm;font:300 16pt \'Varela Round\',\'Nunito\';color:rgba(255,255,255,.68);">' + c.no + '</span>'
+      + '<span style="position:absolute;top:5mm;right:6mm;font:300 16pt \'Noto Sans TC\';color:rgba(255,255,255,.85);letter-spacing:.06em;">' + c.zh + '</span>'
+      + '<div style="font:900 56pt/1 \'Varela Round\',\'Nunito\';color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.18);">' + c.sym + '</div>'
+      + '<div style="font:300 13pt \'Varela Round\',\'Nunito\';color:rgba(255,255,255,.74);letter-spacing:.1em;margin-top:2mm;">' + c.eng + '</div>'
+    + '</div>'
+    + '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5mm 6mm;background:#fff;">'
+      + '<div style="font:500 11pt \'Noto Sans TC\';white-space:nowrap;padding:3px 14px;border-radius:10px;background:' + c.cPale + ';color:' + c.cDeep + ';margin-bottom:4mm;">' + c.typeEmoji + ' ' + c.typeName + '</div>'
+      + '<div style="width:24px;height:2px;border-radius:2px;background:' + c.c + ';margin-bottom:4mm;"></div>'
+      + '<div style="font:700 19pt/1.5 \'Noto Serif TC\';color:#2A2420;text-align:center;">' + c.titleA + c.titleB + '</div>'
+    + '</div>'
+  + '</div>';
+}
+
+function backCard(c) {
+  return '<div style="height:100%;background:#fff;border:1px solid #E0DACF;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 4px rgba(0,0,0,.08);">'
+    + '<div style="background:' + c.cPale + ';padding:5mm 6mm 4mm;display:flex;align-items:center;gap:3mm;">'
+      + '<div style="width:13mm;height:13mm;flex-shrink:0;background:' + c.c + ';border-radius:8px;display:flex;align-items:center;justify-content:center;font:900 17pt \'Varela Round\',\'Nunito\';color:#fff;">' + c.sym + '</div>'
+      + '<div style="flex:1;min-width:0;">'
+        + '<div style="font:700 13pt/1.3 \'Noto Serif TC\';color:#2A2420;">' + c.titleA + c.titleB + '</div>'
+        + '<div style="font:400 9pt \'Varela Round\';color:#A0968C;margin-top:1px;">' + c.zh + ' · ' + c.eng + ' · ' + c.no + '</div>'
+      + '</div>'
+      + (c.person ? '<div style="font:700 10pt \'Noto Serif TC\';color:' + c.cDeep + ';flex-shrink:0;">📖 ' + c.person + '</div>' : '')
+    + '</div>'
+    + '<div style="flex:1;padding:5mm 6mm 6mm;display:flex;flex-direction:column;">'
+      + '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1mm;">適合對象</div>'
+      + '<div style="font:400 11.5pt/1.55 \'Noto Sans TC\';color:#6B6358;margin-bottom:3mm;">' + c.target + '</div>'
+      + '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1mm;">科學特性</div>'
+      + '<div style="font:400 11.5pt/1.55 \'Noto Sans TC\';color:#6B6358;margin-bottom:3mm;">' + c.sci + '</div>'
+      + '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1mm;">屬靈特質</div>'
+      + '<div style="font:400 11.5pt/1.55 \'Noto Sans TC\';color:#4A443C;margin-bottom:3mm;">' + c.sp + '</div>'
+      + '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1mm;">留意</div>'
+      + '<div style="font:italic 400 11.5pt/1.55 \'Noto Sans TC\';color:#8C8377;margin-bottom:3mm;">' + c.weak + '</div>'
+      + '<div style="margin-top:auto;background:' + c.cPale + ';border-radius:7px;padding:3mm 4mm;font:400 11pt/1.6 \'Noto Serif TC\';color:' + c.cDeep + ';">'
+        + c.verseText
+        + '<span style="display:block;font-size:9pt;color:#A0968C;margin-top:1mm;">' + c.verseRef + '</span>'
+      + '</div>'
+    + '</div>'
+  + '</div>';
+}
+
+(function renderPages() {
+  var cards = ELEMENTS.map(buildCard);
+  var PER = 4;
+  var sheets = Math.ceil(cards.length / PER);
+  var sheetStyle = 'width:210mm;height:297mm;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:5mm;padding:12mm;background:#fff;page-break-after:always;break-after:page;';
+  var html = '';
+
+  for (var s = 0; s < sheets; s++) {
+    var batch = cards.slice(s * PER, s * PER + PER);
+    while (batch.length < PER) batch.push(null);
+
+    html += '<div class="slabel">第 ' + (s + 1) + ' 張紙 · 正面</div>';
+    html += '<div class="sheet" style="' + sheetStyle + '">';
+    batch.forEach(function(c) { html += c ? frontCard(c) : '<div></div>'; });
+    html += '</div>';
+
+    var mirror = [batch[1], batch[0], batch[3], batch[2]];
+    html += '<div class="slabel">第 ' + (s + 1) + ' 張紙 · 背面（長邊翻面對齊）</div>';
+    html += '<div class="sheet" style="' + sheetStyle + '">';
+    mirror.forEach(function(c) { html += c ? backCard(c) : '<div></div>'; });
+    html += '</div>';
+  }
+
+  document.getElementById('root').innerHTML = html;
+})();
+</script>
+</body>
+</html>

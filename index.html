@@ -1,53 +1,84 @@
 <!DOCTYPE html>
-<!-- saved from url=(0059)file:///Users/YLC/Downloads/spiritual_element_cards_v2.html -->
-<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>屬靈元素週期表 · 彩色版</title>
-<link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Nunito:wght@400;600;700;800;900&family=Noto+Serif+TC:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>上帝的化學配方 · 屬靈元素週期表</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Nunito:wght@300;400;500;600;700;800;900&family=Noto+Serif+TC:wght@300;400;500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="header">
-  <div class="header-top">
-    <div class="header-icon">⚗️</div>
-    <h1>上帝的化學配方</h1>
+<!-- ── SWITCHER ── -->
+<div id="switcher">
+  <button id="sw-lively" class="sw-btn" onclick="setStyle('lively')">活潑明亮</button>
+  <button id="sw-fresh"  class="sw-btn" onclick="setStyle('fresh')">簡約活潑</button>
+  <div class="sw-sep"></div>
+  <button id="sw-table" class="sw-btn" onclick="setLayout('table')">週期表</button>
+  <button id="sw-grid"  class="sw-btn" onclick="setLayout('grid')">卡片排列</button>
+  <div class="sw-sep"></div>
+  <button class="sw-btn sw-print" onclick="openPrint()">🖨️ 列印卡片</button>
+</div>
+
+<!-- ── PAGE ── -->
+<div id="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="header-icon">⚗️</div>
+      <h1>上帝的化學配方</h1>
+    </div>
+    <div class="header-sub">Spiritual Periodic Table · 屬靈元素週期表</div>
+    <div class="verse-strip">「肢體雖多，身子卻是一個。」— 哥林多前書 12:20</div>
   </div>
-  <div class="header-sub">Spiritual Periodic Table · 屬靈元素週期表</div>
-  <div class="verse-strip">「肢體雖多，身子卻是一個。」—哥林多前書 12:20</div>
-</div>
 
-<div class="legend">
-  <div class="leg-item"><div class="leg-dot" style="background:var(--action-main)"></div>🔥 行動型</div>
-  <div class="leg-item"><div class="leg-dot" style="background:var(--struct-main)"></div>🏛️ 支撐型</div>
-  <div class="leg-item"><div class="leg-dot" style="background:var(--rel-main)"></div>🌿 連結型</div>
-  <div class="leg-item"><div class="leg-dot" style="background:var(--stab-main)"></div>🕊️ 穩定型</div>
-</div>
-
-<div class="filter-bar">
-  <div class="fbtn-group">
-    <button class="fbtn on-all" onclick="filter(&#39;all&#39;,this,&#39;on-all&#39;)">全部 16 張</button>
-    <button class="fbtn" onclick="filter(&#39;action&#39;,this,&#39;on-action&#39;)">🔥 行動型</button>
-    <button class="fbtn" onclick="filter(&#39;structural&#39;,this,&#39;on-structural&#39;)">🏛️ 支撐型</button>
-    <button class="fbtn" onclick="filter(&#39;relational&#39;,this,&#39;on-relational&#39;)">🌿 連結型</button>
-    <button class="fbtn" onclick="filter(&#39;stabilizing&#39;,this,&#39;on-stabilizing&#39;)">🕊️ 穩定型</button>
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="leg-item"><span class="leg-dot" style="background:#FF7F6B"></span>🔥 行動型</div>
+    <div class="leg-item"><span class="leg-dot" style="background:#F0A840"></span>🏛️ 支撐型</div>
+    <div class="leg-item"><span class="leg-dot" style="background:#4EC8B0"></span>🌿 連結型</div>
+    <div class="leg-item"><span class="leg-dot" style="background:#8AAEE0"></span>🕊️ 穩定型</div>
   </div>
-  <a href="print.html" target="_blank" class="print-link">🖨️ 列印版</a>
-</div>
-<div class="controls">
-  <p class="hint">點擊卡片翻面 · 查看完整說明</p>
+  <div id="hint-bar" class="hint-bar"></div>
+
+  <!-- TABLE VIEW -->
+  <div id="view-table">
+    <div class="ptable-scroll">
+      <div id="ptable" class="ptable"></div>
+    </div>
+  </div>
+
+  <!-- GRID VIEW -->
+  <div id="view-grid" style="display:none">
+    <div id="type-groups" class="type-groups-wrap"></div>
+  </div>
+
+  <!-- COMPOUND SECTION -->
+  <div id="compound-section" class="board-section">
+    <div class="section-wrap">
+      <div class="section-title" id="section-title-inner"></div>
+      <div id="cgrid" class="cgrid"></div>
+    </div>
+  </div>
+
 </div>
 
-
-<div class="grid" id="grid"></div>
-
-<div class="board-section">
-<div class="section-wrap">
-  <div class="section-title"><span>⚗ 化合物團契 · Compound Fellowship</span></div>
-  <div class="cgrid" id="cgrid"></div>
-</div>
+<!-- ── MODAL ── -->
+<div id="modal" onclick="closeModal()">
+  <div id="modal-inner" onclick="event.stopPropagation()">
+    <div id="modal-card" onclick="toggleModalFlip()">
+      <div id="modal-flipper">
+        <div id="modal-front" class="modal-face"></div>
+        <div id="modal-back"  class="modal-face modal-back-face"></div>
+      </div>
+    </div>
+    <div class="modal-hint">點擊卡片翻面 · 點擊空白處關閉</div>
+  </div>
 </div>
 
 <script src="script.js"></script>
-</body></html>
+</body>
+</html>
