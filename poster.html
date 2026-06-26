@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>海報拼貼範本 · 12 組同框（橫式）+ 元素卡浮貼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Nunito:wght@300;400;500;600;700;800;900&family=Noto+Serif+TC:wght@300;400;500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#1c2340; --board-text:#f0ede4; --amber:#F0A840; --amber-d:#C07820;
+    --bg:#f5f3ef; --ink:#4A443C; --muted:#8C8377; --kraft:#C2A06E;
+    --parch:#FBF5E9; --parch-edge:#E6DCC6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Noto Sans TC',sans-serif;
+    background-image:radial-gradient(#dcd6ca 1px,transparent 1px);
+    background-size:22px 22px;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;  /* 強制列印背景色 */
+  }
+
+  /* ── SCREEN UI ── */
+  .ui{max-width:980px;margin:0 auto;padding:34px 22px 80px;}
+  .ui h1{font-family:'Noto Serif TC',serif;font-weight:700;font-size:26px;margin:0 0 6px;color:#2A2622;}
+  .ui .sub{color:var(--muted);font-size:14px;line-height:1.75;margin:0 0 24px;}
+  .panel{background:#fff;border:1px solid #ECE7DD;border-radius:14px;padding:22px 24px;margin-bottom:22px;
+         box-shadow:0 1px 3px rgba(0,0,0,.04);}
+  .panel h2{font-family:'Noto Serif TC',serif;font-size:17px;margin:0 0 4px;color:#2A2622;}
+  .panel .note{font-size:13px;color:var(--muted);line-height:1.75;margin:0 0 16px;}
+  .panel .note b{color:var(--ink);}
+
+  .preview-wrap{display:flex;gap:30px;align-items:flex-start;flex-wrap:wrap;}
+  .paper-toggle{display:inline-flex;border:1px solid #d8d2c6;border-radius:9px;overflow:hidden;margin-bottom:14px;}
+  .paper-toggle button{border:none;border-radius:0;padding:8px 16px;background:#fff;color:var(--muted);font-size:13px;}
+  .paper-toggle button.on{background:var(--board);color:#fff;}
+
+  /* poster preview 53.5 : 38（橫式），全 12 組 6×2 */
+  .poster{
+    width:400px; aspect-ratio:535/380; border:1px solid #d8d2c6;
+    border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:8px;flex-shrink:0;
+    box-shadow:0 5px 16px rgba(0,0,0,.10);background:#fff;transition:background .2s,border-color .2s;
+  }
+  .poster.kraft{background:var(--kraft);border-color:#a98a5c;}
+  .poster .ptitle{background:var(--parch);color:var(--board);border-top:3px solid var(--amber);
+    border-radius:3px;text-align:center;padding:8px 4px;box-shadow:0 1px 2px rgba(0,0,0,.12);}
+  .poster .ptitle b{font-family:'Noto Serif TC',serif;font-size:15px;display:block;line-height:1.1;letter-spacing:.04em;}
+  .poster .ptitle span{color:var(--amber-d);font-size:7.5px;display:block;margin-top:3px;font-family:'Varela Round';letter-spacing:.12em;}
+  .poster .pgrid{flex:1;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(2,1fr);gap:6px;}
+  .pcell{position:relative;display:flex;flex-direction:column;align-items:center;}
+  .pcell .anc{width:100%;background:var(--parch);color:var(--board);border-radius:3px 3px 0 0;text-align:center;
+    font-family:'Varela Round';font-size:9px;padding:4px 0 3px;line-height:1;z-index:1;
+    border-top:2.5px solid var(--ac,#FF7F6B);}
+  .pcell .pbody{position:absolute;top:17px;width:100%;height:calc(100% - 17px);background:var(--parch);
+    border-radius:0 0 3px 3px;}
+  .pcell .pbody::after{content:'';position:absolute;inset:5px 6px;border-radius:2px;
+    background:repeating-linear-gradient(#d8cfb8 0 1px,transparent 1px 4px);opacity:.7;}
+  .pcell .pcard{position:absolute;top:19px;width:80%;height:64%;background:#FFF8EC;
+    border:1px solid var(--amber);border-radius:3px;box-shadow:1px 3px 6px rgba(0,0,0,.22);
+    transform:rotate(-2deg);transform-origin:top center;z-index:2;}
+  .pcell:nth-child(2) .pcard{transform:rotate(2deg);background:#EDFAF7;border-color:#4EC8B0;}
+  .pcell:nth-child(4) .pcard{transform:rotate(-3deg);background:#FFF0ED;border-color:#FF7F6B;}
+  .pcell:nth-child(7) .pcard{transform:rotate(3deg) translateY(-6px);background:#EEF3FC;border-color:#8AAEE0;}
+  .pcell:nth-child(10) .pcard{transform:rotate(-2deg);background:#FFF8EC;border-color:#F0A840;}
+  .pcell .pcard::before{content:'';position:absolute;top:-2px;left:50%;transform:translateX(-50%);
+    width:42%;height:5px;background:rgba(251,238,195,.92);border:1px solid #e3cf86;border-radius:1px;}
+
+  .legend{font-size:13px;color:var(--ink);line-height:1.95;max-width:330px;}
+  .legend b{color:#2A2622;}
+  .legend .chip{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:6px;}
+  .legend .tape{display:inline-block;width:18px;height:9px;background:#fbeec3;border:1px solid #e3cf86;
+    vertical-align:-1px;margin-right:5px;border-radius:1px;}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px;}
+  button{font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:500;cursor:pointer;
+    border-radius:10px;padding:11px 20px;border:1px solid transparent;transition:.15s;}
+  .btn-primary{background:var(--board);color:#fff;}
+  .btn-primary:hover{background:#262f54;}
+  .btn-ghost{background:#fff;color:var(--ink);border-color:#d8d2c6;}
+  .btn-ghost:hover{border-color:var(--amber);color:#2A2622;}
+  .mini{font-size:12.5px;color:var(--muted);line-height:1.7;}
+  ol.steps{margin:0;padding-left:20px;font-size:13.5px;line-height:1.85;color:var(--ink);}
+  ol.steps b{color:#2A2622;}
+
+  /* ── PRINT SHEETS（標籤，直向） ── */
+  .sheets{display:none;}
+  .sheet{width:190mm;height:277mm;margin:0 auto;page-break-after:always;break-after:page;
+    display:flex;flex-direction:column;}
+  .anchors-sheet{padding-top:6mm;}
+  .anchors-sheet .pagehint{font:400 10.5px 'Noto Sans TC';color:#b3a99c;text-align:center;margin-bottom:5mm;letter-spacing:.06em;}
+  .anc-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:min-content;gap:9mm;align-content:start;}
+
+  .label{position:relative;border:1px solid var(--parch-edge);border-top:3.4mm solid var(--ac);
+    border-radius:3mm;background:var(--parch);color:var(--board);height:120mm;overflow:hidden;
+    display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.1);}
+  .label .l-head{padding:6mm 6mm 4mm;text-align:center;border-bottom:1px dashed #DDD2BC;}
+  .label .l-formula{font-family:'Varela Round',sans-serif;font-weight:700;font-size:26pt;color:var(--board);line-height:1;}
+  .label .l-pun{font:700 11.5pt 'Noto Serif TC';color:var(--amber-d);margin-top:2.5mm;}
+  .label .l-body{padding:5mm 6mm 0;flex:1;}
+  .label .l-desc{font:400 10pt/1.72 'Noto Sans TC';color:#5A5249;text-align:justify;}
+  .label .l-verse{font:italic 400 9.5pt/1.55 'Noto Serif TC';color:#7A8C84;margin-top:4mm;
+    padding-top:3mm;border-top:1px dotted #DDD2BC;}
+  .label .l-foot{font:400 8pt 'Noto Sans TC';color:#B3A99C;text-align:center;padding:3mm;letter-spacing:.05em;
+    background:rgba(0,0,0,.025);}
+
+  @media print{
+    @page{size:A4 portrait;margin:10mm;}
+    body{background:#fff;background-image:none;}
+    .ui{display:none !important;}
+    .sheets{display:block !important;}
+    .sheet:last-child{page-break-after:auto;break-after:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="ui">
+  <h1>海報拼貼範本 · 12 組同框（橫式）</h1>
+  <p class="sub">
+    一張 <b>橫式 53.5 × 38 cm</b> 海報放下全部 12 組化合物。每個化合物是一張<b>含說明＋經文的米色標籤</b>，
+    元素卡用紙膠帶只黏上緣<b>浮貼</b>在標籤上 —— 平常蓋住說明，想讀就把卡片<b>往上掀</b>。
+  </p>
+
+  <div class="panel">
+    <h2>① 完成後長這樣（橫式 53.5 × 38 cm）</h2>
+    <p class="note">深藍主標題（橫向寬扁）當錨點；12 張米色標籤（頂端彩色＝四種屬靈類型）排 6 欄 × 2 列；元素卡浮貼其上。</p>
+    <div class="paper-toggle">
+      <button id="pw" onclick="setPaper(false)">白色捲筒紙</button>
+      <button id="pk" class="on" onclick="setPaper(true)">牛皮紙底（推薦）</button>
+    </div>
+    <div class="preview-wrap">
+      <div class="poster kraft" id="poster" aria-hidden="true">
+        <div class="ptitle"><b>上帝的化學配方</b><span>SPIRITUAL PERIODIC TABLE</span></div>
+        <div class="pgrid" id="pgrid"></div>
+      </div>
+      <div class="legend">
+        <p><span class="chip" style="background:#FBF5E9;border-top:3px solid #F0A840"></span><b>主標題條</b>：米色、橫向寬扁，貼最上方。</p>
+        <p><span class="chip" style="background:#FBF5E9;border:1px solid #E6DCC6"></span><b>12 張米色標籤</b>：公式＋雙關＋<b>說明＋經文</b>，貼成 6 欄 × 2 列。</p>
+        <p><span class="tape"></span><b>浮貼元素卡</b>：紙膠帶黏卡片<b>上緣</b>，貼在標籤上；蓋住說明，掀起來就能讀。</p>
+        <p class="mini" style="margin-top:12px">
+          ‧ 標籤約 8.8 × 12cm，剛好一張元素卡（9 × 12.5cm）蓋上去<br>
+          ‧ 牛皮紙底時，名字用<b>白色/金色中性筆</b>寫
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>② 列印（分兩次，方向不同）</h2>
+    <p class="note">標籤是<b>直向</b>、主標題是<b>橫向</b>，所以分開印。兩個列印視窗都請設<b>縮放 100%、邊界預設</b>。</p>
+    <div class="row">
+      <button class="btn-primary" onclick="window.print()">🖨 列印 12 張標籤（A4 直向 · 共 3 張）</button>
+      <button class="btn-ghost" onclick="printTitle()">🖨 列印主標題條（A4 橫向 · 寬扁）</button>
+    </div>
+    <p class="mini" style="margin-top:10px">主標題會另開一個橫向視窗自動跳出列印；若沒跳出，請允許瀏覽器的彈出視窗。</p>
+  </div>
+
+  <div class="panel">
+    <h2>③ 貼海報 & 浮貼步驟</h2>
+    <ol class="steps">
+      <li>12 張標籤沿外框剪下，照上圖排成 <b>6 欄 × 2 列</b>，用口紅膠固定在海報上。</li>
+      <li>主標題條貼最上方置中。</li>
+      <li>活動時各人找到自己元素所屬的化合物，把元素卡<b>上緣對齊標籤公式列下方</b>，撕紙膠帶黏上緣浮貼。</li>
+      <li>卡片會蓋住說明 —— 想讀化合物的說明與經文，就把卡片<b>往上掀</b>；想換組撕下再貼別張。</li>
+    </ol>
+    <p class="mini" style="margin-top:14px">
+      此檔為獨立範本，不影響主程式。元素卡請用主網頁「列印」功能（A4 一頁 2 張）印出剪下。
+    </p>
+  </div>
+</div>
+
+<div class="sheets" id="sheets"></div>
+
+<script>
+/* 化合物資料（與 script.js 一致，獨立內嵌避免互相影響） */
+var COMPOUNDS = [
+  {f:'NaCl',pun:'氯接鈉 ＝ 接納',
+   desc:'最衝動的鈉（Na）＋最剛直的氯（Cl），鍵結後成為食鹽——生命必需、溫和穩定。教會裡最難合作的兩種人，彼此接納之後，反而成為世上的鹽。',
+   v:'你們是世上的鹽。—馬太福音 5:13'},
+  {f:'H₂O',pun:'氫＋氧 ＝ 活水',
+   desc:'最輕最簡單的氫（H）＋助燃的氧（O），合而為一不是爆炸，而是活水。謙卑單純的人與熱情激勵者同心，湧現生命泉源。',
+   v:'我所賜的水，在他裡頭成為泉源，直湧到永生。—約翰福音 4:14'},
+  {f:'CO₂',pun:'碳＋氧 ＝ 呼出的禱告',
+   desc:'看似廢棄的碳與氧組合，卻是植物光合作用的養分，使萬物生長。你覺得軟弱的禱告，在神手中成為滋養他人的力量。',
+   v:'聖靈親自用說不出來的嘆息替我們禱告。—羅馬書 8:26'},
+  {f:'CaC₂',pun:'電石 ＝ 等候發光',
+   desc:'鈣（Ca）與碳（C）平時沉默，看似無用，遇到活水卻立刻燃燒發光。許多幕後同工就像電石——他們在等候聖靈澆灌的時刻。',
+   v:'我是世界的光。跟從我的，必要得著生命的光。—約翰福音 8:12'},
+  {f:'AgCl',pun:'感光底片 ＝ 攝影師',
+   desc:'聖潔的銀（Ag）＋守望的氯（Cl）→ 氯化銀是傳統底片感光材料，對光極度敏感。他們記錄神在群體中的作為，是教會的見證者。',
+   v:'你要把所看見的，現在的事，並將來必成的事，都寫出來。—啟示錄 1:19'},
+  {f:'AuCu',pun:'玫瑰合金 ＝ 成熟接納',
+   desc:'亮金的尊貴與銅的溫暖交織成玫瑰金——成熟與親切一起，讓服事既高貴又貼近人心。',
+   v:'愛是恆久忍耐，又有恩慈。—哥林多前書 13:4'},
+  {f:'SiO₂',pun:'矽氧共舞 ＝ 智慧透明',
+   desc:'矽（Si）是堅固基礎，氧（O）是生命氣息；合而為一成為透明的玻璃。清晰而穩固的團隊，來自理性與熱情的共同築造。',
+   v:'智慧比珍珠更寶貴。—箴言 3:15'},
+  {f:'TiO₂',pun:'鈦陽 ＝ 在光中潔淨',
+   desc:'最強韌的鈦（Ti）＋助燃的氧（O），合成二氧化鈦——光觸媒，在陽光照射下能分解污垢。改革者與激勵者結合，在光裡帶來更新與潔淨。',
+   v:'你們是世上的光。—馬太福音 5:14'},
+  {f:'KCl',pun:'守護心跳的鹽',
+   desc:'感知心律的鉀（K）＋守望的氯（Cl），合成氯化鉀——補充心律失調缺乏的電解質。敏銳的禱告者與剛直的守望者結合，是教會靈命的護心鹽。',
+   v:'我立你作以色列家守望的人。—以西結書 3:17'},
+  {f:'Fe·O₂',pun:'血紅素 ＝ 背負生命',
+   desc:'沉默剛強的鐵（Fe）緊緊抓住氧（O），成為血紅素——在血液裡把生命輸送到全身每個角落。最不起眼、默默負重的人，正是運送生命的關鍵。',
+   v:'因為活物的生命是在血中。—利未記 17:11'},
+  {f:'Ca₃(PO₄)₂',pun:'骨骼 ＝ 看不見的支撐',
+   desc:'鈣（Ca）與磷（P）結合成磷酸鈣，是骨骼與牙齒的主成分——看不見、不被稱讚，卻撐起整個身體的重量。',
+   v:'身上肢體，人以為軟弱的，更是不可少的。—哥林多前書 12:22'},
+  {f:'空氣',pun:'各守本位的同在（混合物）',
+   desc:'氮（N）、氧（O）與惰性的氦（He）彼此不鍵結、各自保持本性，只是混合在一起，就成了維繫萬物呼吸的空氣。有些肢體不需與人「融合」才有價值——安靜的同在，本身就是群體呼吸的氣息。',
+   v:'耶和華神將生氣吹在他鼻孔裡，他就成了有靈的活人。—創世記 2:7'}
+];
+
+/* 四種屬靈類型色，標籤頂端彩條輪流用 */
+var ACCENTS = ['#FF7F6B','#F0A840','#4EC8B0','#8AAEE0'];
+var FONTS = 'https://fonts.googleapis.com/css2?family=Varela+Round&family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap';
+
+/* 預覽縮圖 */
+var pgrid = document.getElementById('pgrid');
+COMPOUNDS.forEach(function(c,i){
+  var cell = document.createElement('div');
+  cell.className = 'pcell';
+  cell.innerHTML = '<div class="anc" style="--ac:'+ACCENTS[i%4]+'">'+c.f+'</div>'+
+    '<div class="pbody"></div><div class="pcard"></div>';
+  pgrid.appendChild(cell);
+});
+
+function setPaper(kraft){
+  document.getElementById('poster').classList.toggle('kraft', kraft);
+  document.getElementById('pk').classList.toggle('on', kraft);
+  document.getElementById('pw').classList.toggle('on', !kraft);
+}
+
+/* ── 標籤頁（直向，每頁 4 張 2×2） ── */
+function labelHTML(c,i){
+  return '<div class="label" style="--ac:'+ACCENTS[i%4]+'">'+
+    '<div class="l-head"><div class="l-formula">'+c.f+'</div><div class="l-pun">'+c.pun+'</div></div>'+
+    '<div class="l-body"><div class="l-desc">'+c.desc+'</div>'+
+      '<div class="l-verse">'+c.v+'</div></div>'+
+    '<div class="l-foot">↑ 元素卡浮貼於此，可掀起看說明</div>'+
+  '</div>';
+}
+function buildSheets(){
+  var perPage = 4, pages = Math.ceil(COMPOUNDS.length/perPage), html='';
+  for(var p=0;p<pages;p++){
+    var items = COMPOUNDS.slice(p*perPage,(p+1)*perPage);
+    var cells = items.map(function(c,k){ return labelHTML(c, p*perPage+k); }).join('');
+    html += '<div class="sheet anchors-sheet">'+
+      '<div class="pagehint">化合物標籤（第 '+(p+1)+' / '+pages+' 張）· ✂ 沿外框剪下，貼成 6 欄 × 2 列</div>'+
+      '<div class="anc-grid">'+cells+'</div></div>';
+  }
+  document.getElementById('sheets').innerHTML = html;
+}
+window.addEventListener('beforeprint', buildSheets);
+
+/* ── 主標題條（橫向，另開視窗列印） ── */
+function printTitle(){
+  var w = window.open('', '_blank', 'width=1000,height=560');
+  if(!w){ alert('請允許此頁的彈出視窗，才能列印橫向主標題。'); return; }
+  var html =
+'<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8">'+
+'<link rel="preconnect" href="https://fonts.googleapis.com">'+
+'<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'+
+'<link href="'+FONTS+'" rel="stylesheet">'+
+'<title>主標題條</title><style>'+
+'@page{size:A4 landscape;margin:10mm;}'+
+'*{box-sizing:border-box;margin:0;}'+
+'body{font-family:\'Noto Sans TC\',sans-serif;display:flex;flex-direction:column;align-items:center;'+
+'justify-content:center;min-height:190mm;background:#fff;'+
+'-webkit-print-color-adjust:exact;print-color-adjust:exact;}'+
+'.cut-hint{font:400 10.5px \'Noto Sans TC\';color:#b3a99c;letter-spacing:.08em;margin-bottom:5mm;}'+
+'.title-strip{position:relative;width:273mm;border:1px solid #E6DCC6;border-top:4.5mm solid #F0A840;'+
+'border-radius:5mm;background:#FBF5E9;color:#1c2340;padding:17mm 26mm;text-align:center;}'+
+'.t-main{font-family:\'Noto Serif TC\',serif;font-weight:900;font-size:46pt;color:#1c2340;'+
+'line-height:1.05;letter-spacing:.06em;}'+
+'.t-sub{font-family:\'Varela Round\',sans-serif;font-weight:400;font-size:15pt;color:#C07820;'+
+'margin-top:6mm;letter-spacing:.34em;padding-left:.34em;}'+
+'.t-rule{width:42mm;height:2px;background:#F0A840;margin:7mm auto 0;border-radius:2px;}'+
+'</style></head><body>'+
+'<div class="cut-hint">✂ 沿外框剪下，貼在海報最上方（置中）</div>'+
+'<div class="title-strip">'+
+'<div class="t-main">上帝的化學配方</div>'+
+'<div class="t-rule"></div>'+
+'<div class="t-sub">SPIRITUAL PERIODIC TABLE</div>'+
+'</div>'+
+'<scr'+'ipt>window.onload=function(){setTimeout(function(){window.print();},600);};</scr'+'ipt>'+
+'</body></html>';
+  w.document.open(); w.document.write(html); w.document.close();
+}
+</script>
+</body>
+</html>
