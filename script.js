@@ -111,9 +111,14 @@ const COMPOUNDS = [
   {f:'AgCl',pun:'感光底片 ＝ 屬靈攝影師',desc:'聖潔的銀（Ag）＋守望的氯（Cl）→ 氯化銀是傳統底片感光材料，對光極度敏感。他們記錄神在群體中的作為，是教會的見證者。',verse:'你要把所看見的，現在的事，並將來必成的事，都寫出來。—啟示錄 1:19'},
   {f:'AuCu',pun:'玫瑰合金 ＝ 成熟的接納',desc:'亮金的尊貴與銅的溫暖交織成玫瑰金——成熟與親切一起，讓服事既高貴又貼近人心。',verse:'愛是恆久忍耐，又有恩慈。—哥林多前書 13:4'},
   {f:'SiO₂',pun:'矽氧共舞 ＝ 智慧透明',desc:'矽（Si）是堅固基礎，氧（O）是生命氣息；合而為一成為透明的玻璃。清晰而穩固的團隊，來自理性與熱情的共同築造。',verse:'智慧比珍珠更寶貴。—箴言 3:15'},
-  {f:'SiC',pun:'碳化矽 ＝ 磨礪相長',desc:'理性穩重的矽（Si）＋靈活適應的碳（C），合成碳化矽——硬度僅次於鑽石，是最鋒利的磨具。最互補的搭檔，不是讓彼此舒服，而是讓彼此更銳利。',verse:'鐵磨鐵，磨出刃來；朋友相感，也是如此。—箴言 27:17'},
   {f:'TiO₂',pun:'鈦陽 ＝ 在光中潔淨',desc:'最強韌的鈦（Ti）＋助燃的氧（O），合成二氧化鈦——光觸媒，在陽光照射下能分解一切污垢。改革者與激勵者結合，在光裡帶來更新與潔淨。',verse:'你們是世上的光。—馬太福音 5:14'},
-  {f:'KCl',pun:'守護心跳的鹽',desc:'感知心律的鉀（K）＋殺菌守望的氯（Cl），合成氯化鉀——補充心律失調缺乏的電解質。敏銳的禱告者與剛直的守望者結合，是教會靈命的護心鹽。',verse:'我立你作以色列家守望的人。—以西結書 3:17'}
+  {f:'KCl',pun:'守護心跳的鹽',desc:'感知心律的鉀（K）＋殺菌守望的氯（Cl），合成氯化鉀——補充心律失調缺乏的電解質。敏銳的禱告者與剛直的守望者結合，是教會靈命的護心鹽。',verse:'我立你作以色列家守望的人。—以西結書 3:17'},
+  {f:'Fe·O₂',pun:'血紅素 ＝ 背負生命的鐵',desc:'沉默剛強的鐵（Fe）緊緊抓住氧（O），成為血紅素——在血液裡把生命輸送到全身每個角落。最不起眼、默默負重的人，正是運送生命的關鍵。',verse:'因為活物的生命是在血中。—利未記 17:11'},
+  {f:'Ca₃(PO₄)₂',pun:'骨骼 ＝ 看不見的支撐',desc:'鈣（Ca）與磷（P）結合成磷酸鈣，是骨骼與牙齒的主成分——看不見、不被稱讚，卻撐起整個身體的重量。',verse:'身上肢體，人以為軟弱的，更是不可少的。—哥林多前書 12:22'}
+];
+
+const MIXTURES = [
+  {f:'空氣',pun:'各守本位的同在',desc:'氮（N）、氧（O）與惰性的氦（He）彼此不鍵結、各自保持本性，只是混合在一起，就成了維繫萬物呼吸的空氣。有些肢體不需要與人「融合」才有價值——他們安靜的同在，本身就是群體呼吸的氣息。',verse:'耶和華神將生氣吹在他鼻孔裡，他就成了有靈的活人。—創世記 2:7'}
 ];
 
 // Full periodic table: [atomicNo, symbol, group(1-18), period(1-7)]
@@ -587,6 +592,24 @@ function renderCompounds() {
       '</div>';
   });
 
+  // Mixture sub-section — coexist without bonding (full-width heading + dashed cards)
+  var dash = appStyle === 'lively' ? 'rgba(138,174,224,.5)' : '#C9D4E8';
+  html +=
+    '<div style="grid-column:1/-1; display:flex; align-items:center; gap:14px; margin:14px 0 0;">' +
+      '<div style="flex:1; height:1px; background:' + t.rule + ';"></div>' +
+      '<span style="font:600 13px \'Noto Serif TC\'; letter-spacing:.08em; color:' + t.head + '; white-space:nowrap;">🌬 混合物 · Mixture（不鍵結，卻一起維繫生命）</span>' +
+      '<div style="flex:1; height:1px; background:' + t.rule + ';"></div>' +
+    '</div>';
+  MIXTURES.forEach(function(mx) {
+    html +=
+      '<div style="position:relative; overflow:hidden; background:' + t.card + '; border:1px dashed ' + dash + '; border-radius:10px; padding:18px 17px 15px;">' +
+        '<div style="font:900 28px \'Varela Round\',\'Nunito\'; color:' + t.formula + '; margin:4px 0 1px;">' + mx.f + '</div>' +
+        '<div style="font:700 14px \'Noto Serif TC\'; color:' + t.pun + '; margin-bottom:10px;">' + mx.pun + '</div>' +
+        '<div style="font:400 12px/1.7 \'Noto Sans TC\'; color:' + t.desc + '; margin-bottom:11px;">' + mx.desc + '</div>' +
+        '<div style="font:400 11px/1.6 \'Noto Serif TC\'; color:' + t.verseTx + '; background:' + t.verseBg + '; border-radius:7px; padding:8px 11px;">' + mx.verse + '</div>' +
+      '</div>';
+  });
+
   cgrid.innerHTML = html;
 }
 
@@ -642,7 +665,410 @@ function openPrint() {
 }
 
 /* ═══════════════════════════════════════════════════════
+   CUSTOM CARD DESIGNER
+═══════════════════════════════════════════════════════ */
+
+let custom = {
+  sym:'', no:'', zh:'', eng:'', type:'action',
+  titleA:'', titleB:'', person:'',
+  target:'', sci:'', sp:'', weak:'',
+  verseText:'', verseRef:''
+};
+let customStyle = 'lively';
+let customFlipped = false;
+
+const CUSTOM_PH = {
+  sym:'Xx', no:'?', zh:'元素', eng:'Element',
+  titleA:'我的屬靈', titleB:'稱號',
+  target:'（描述什麼樣的人適合這張卡）',
+  sci:'（這個元素有什麼科學特性？）',
+  sp:'（這個元素代表的屬靈特質是什麼？）',
+  weak:'（提醒自己要留意、成長的功課）',
+  verseText:'（寫下一句對你有意義的經文）',
+  verseRef:'—出處'
+};
+
+// Build a full element object from the form (filling blanks with placeholders for preview)
+function customEl(forPreview) {
+  function pick(k) {
+    var v = (custom[k] || '').trim();
+    if (v) return v;
+    return forPreview ? CUSTOM_PH[k] : '';
+  }
+  var titleA = pick('titleA');
+  var titleB = (custom.titleB || '').trim() || (forPreview ? CUSTOM_PH.titleB : '');
+  var title = titleB ? titleA + '<br>' + titleB : titleA;
+
+  var vt = pick('verseText');
+  var vr = (custom.verseRef || '').trim();
+  if (forPreview && !vr) vr = CUSTOM_PH.verseRef;
+  var verse = vr ? vt + '\n' + (vr.charAt(0) === '—' ? vr : '—' + vr) : vt;
+
+  return {
+    sym: pick('sym'), no: pick('no'), zh: pick('zh'), eng: pick('eng'),
+    type: custom.type, title: title, person: pick('person'),
+    target: pick('target'), sci: pick('sci'), sp: pick('sp'),
+    weak: pick('weak'), verse: verse
+  };
+}
+
+function openDesigner() {
+  customFlipped = false;
+  renderDesignerForm();
+  renderCustomPreview();
+  document.getElementById('designer').style.display = 'flex';
+}
+
+function closeDesigner() {
+  document.getElementById('designer').style.display = 'none';
+}
+
+function updateCustom(field, value) {
+  custom[field] = value;
+  renderCustomPreview();
+}
+
+function setCustomType(t) {
+  custom.type = t;
+  document.querySelectorAll('.dz-type-btn').forEach(function(b) {
+    var on = b.getAttribute('data-type') === t;
+    b.classList.toggle('active', on);
+    b.style.color = on ? PAL[b.getAttribute('data-type')][1] : '#6B6358';
+  });
+  renderCustomPreview();
+}
+
+function setCustomStyle(s) {
+  customStyle = s;
+  ['lively','fresh'].forEach(function(x) {
+    document.getElementById('dz-style-' + x).classList.toggle('active', x === s);
+  });
+  renderCustomPreview();
+}
+
+function toggleCustomFlip() {
+  customFlipped = !customFlipped;
+  var inner = document.getElementById('dz-card-inner');
+  if (inner) {
+    var tx = customFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+    inner.style.transform = tx;
+    inner.style.webkitTransform = tx;
+  }
+}
+
+/* ── form ── */
+
+function dzField(label, field, opt, placeholder, narrow) {
+  return '<div class="dz-field' + (narrow ? ' dz-narrow' : '') + '">' +
+    '<label class="dz-label">' + label + (opt ? ' <span class="dz-opt">(選填)</span>' : '') + '</label>' +
+    '<input class="dz-input" value="' + esc(custom[field]) + '" ' +
+      'placeholder="' + (placeholder || '') + '" ' +
+      'oninput="updateCustom(\'' + field + '\', this.value)"></div>';
+}
+
+function dzArea(label, field, placeholder) {
+  return '<div class="dz-field">' +
+    '<label class="dz-label">' + label + '</label>' +
+    '<textarea class="dz-textarea" placeholder="' + (placeholder || '') + '" ' +
+      'oninput="updateCustom(\'' + field + '\', this.value)">' + esc(custom[field]) + '</textarea></div>';
+}
+
+function esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderDesignerForm() {
+  var html = '';
+
+  html += '<div class="dz-group-label">基本資料</div>';
+  html += '<div class="dz-row">' +
+    dzField('元素符號', 'sym', false, '如 Na、Fe', true) +
+    dzField('原子序', 'no', true, '#', true) +
+    dzField('中文名', 'zh', false, '如 鈉') +
+  '</div>';
+  html += dzField('英文名', 'eng', false, '如 Sodium');
+
+  html += '<div class="dz-group-label">屬靈類型</div>';
+  html += '<div class="dz-types">';
+  TYPE_ORDER.forEach(function(t) {
+    var on = custom.type === t;
+    var col = PAL[t];
+    var m = META[t];
+    html += '<div class="dz-type-btn' + (on ? ' active' : '') + '" data-type="' + t + '" ' +
+      'style="color:' + (on ? col[1] : '#6B6358') + '" onclick="setCustomType(\'' + t + '\')">' +
+      '<span class="dz-type-dot" style="background:' + col[0] + '"></span>' + m.emoji + ' ' + m.name + '</div>';
+  });
+  html += '</div>';
+
+  html += '<div class="dz-group-label">屬靈稱號</div>';
+  html += '<div class="dz-row">' +
+    dzField('稱號（第一行）', 'titleA', false, '如 直率衝動的') +
+    dzField('稱號（第二行）', 'titleB', true, '如 開拓者') +
+  '</div>';
+  html += dzField('對應聖經人物', 'person', true, '如 彼得');
+
+  html += '<div class="dz-group-label">卡片背面說明</div>';
+  html += dzArea('適合對象', 'target', '什麼樣的人適合這張卡？');
+  html += dzArea('科學特性', 'sci', '這個元素有什麼科學特性？');
+  html += dzArea('屬靈特質', 'sp', '這個元素代表的屬靈特質是什麼？');
+  html += dzArea('留意（成長功課）', 'weak', '提醒自己要留意、成長的地方');
+
+  html += '<div class="dz-group-label">經文</div>';
+  html += dzArea('經文內容', 'verseText', '寫下一句對你有意義的經文');
+  html += dzField('經文出處', 'verseRef', false, '如 馬太福音 14:29');
+
+  document.getElementById('designer-form').innerHTML = html;
+}
+
+/* ── live preview (reuses the deck's card builders) ── */
+
+function renderCustomPreview() {
+  var el = customEl(true);
+  var isL = customStyle === 'lively';
+  var tx = customFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+
+  var frontFaceStyle, backFaceStyle, frontHTML;
+  if (isL) {
+    frontFaceStyle = 'position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,.12); display:flex; flex-direction:column;';
+    backFaceStyle  = frontFaceStyle + ' transform:rotateY(180deg); -webkit-transform:rotateY(180deg);';
+    frontHTML = cardFrontLively(el);
+  } else {
+    frontFaceStyle = 'position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:#fff; border:1px solid #ECE7DD; border-radius:3px; box-shadow:0 1px 3px rgba(0,0,0,.06); padding:16px 14px 14px; display:flex; flex-direction:column;';
+    backFaceStyle  = 'position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:#fff; border:1px solid #ECE7DD; border-radius:3px; box-shadow:0 1px 3px rgba(0,0,0,.06); display:flex; flex-direction:column; overflow:hidden; transform:rotateY(180deg); -webkit-transform:rotateY(180deg);';
+    frontHTML = cardFrontFresh(el);
+  }
+
+  var html =
+    '<div class="dz-style-toggle">' +
+      '<button id="dz-style-lively" class="dz-style-btn' + (isL ? ' active' : '') + '" onclick="setCustomStyle(\'lively\')">活潑明亮</button>' +
+      '<button id="dz-style-fresh" class="dz-style-btn' + (!isL ? ' active' : '') + '" onclick="setCustomStyle(\'fresh\')">簡約活潑</button>' +
+    '</div>' +
+    '<div id="dz-card-wrap" onclick="toggleCustomFlip()">' +
+      '<div id="dz-card-inner" style="position:relative; width:100%; aspect-ratio:3/4.15; transform-style:preserve-3d; -webkit-transform-style:preserve-3d; transition:transform .6s cubic-bezier(.65,.05,.36,1); transform:' + tx + '; -webkit-transform:' + tx + ';">' +
+        '<div style="' + frontFaceStyle + '">' + frontHTML + '</div>' +
+        '<div style="' + backFaceStyle + '">' + cardBackHTML(el, customStyle) + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="dz-preview-hint">點擊卡片可翻面預覽</div>' +
+    '<div class="dz-actions">' +
+      '<button class="dz-btn dz-btn-primary" onclick="printCustomCard()">🖨️ 列印我設計的卡（正反面）</button>' +
+      '<button class="dz-btn dz-btn-ghost" onclick="printExampleTemplate()">📋 列印範例版（參考怎麼填）</button>' +
+      '<button class="dz-btn dz-btn-ghost" onclick="printBlankTemplate()">📝 列印空白版（手寫）</button>' +
+    '</div>';
+
+  document.getElementById('designer-preview').innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CUSTOM CARD PRINT (A4, matches the deck's print layout)
+═══════════════════════════════════════════════════════ */
+
+function printDocHead(title) {
+  return '<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<title>' + title + '</title>' +
+    '<link rel="preconnect" href="https://fonts.googleapis.com">' +
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Nunito:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">' +
+    '<style>' +
+      '*{margin:0;padding:0;box-sizing:border-box;}' +
+      'body{font-family:\'Noto Sans TC\',sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;}' +
+      '@page{size:A4 portrait;margin:0;}' +
+      '@media screen{body{background:#6b6b6b;padding:26px 0 40px;}' +
+        '.sheet{box-shadow:0 4px 24px rgba(0,0,0,.35);margin:0 auto 6px;}' +
+        '.slabel{font:500 12px sans-serif;color:#d6d2cb;width:210mm;margin:18px auto 5px;padding-left:2mm;}' +
+        '.slabel:first-child{margin-top:0;}' +
+        '.tip{width:210mm;margin:0 auto 14px;color:#eee;font:400 13px sans-serif;text-align:center;}}' +
+      '@media print{.slabel,.tip{display:none;}body{background:#fff;padding:0;}.sheet{box-shadow:none!important;margin:0!important;}}' +
+    '</style></head><body>';
+}
+
+// An A4 sheet with an optional printed heading; each card row holds [front | back]
+function printSheet(rowsHTML, heading) {
+  var head = heading
+    ? '<div style="text-align:center;margin-bottom:5mm;">' +
+        '<div style="font:700 15pt \'Noto Serif TC\';color:#2A2420;">' + heading.t + '</div>' +
+        (heading.s ? '<div style="font:400 10pt \'Noto Sans TC\';color:#A0968C;margin-top:1mm;">' + heading.s + '</div>' : '') +
+      '</div>'
+    : '';
+  var grid = '<div style="display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:125mm;gap:5mm;align-content:start;">' + rowsHTML + '</div>';
+  var style = 'width:210mm;height:297mm;display:flex;flex-direction:column;justify-content:center;' +
+    'padding:12mm;background:#fff;page-break-after:always;break-after:page;';
+  return '<div class="sheet" style="' + style + '">' + head + grid + '</div>';
+}
+
+function pFront(el) {
+  var t = PAL[el.type], m = META[el.type];
+  var parts = el.title.split('<br>');
+  var grad = 'linear-gradient(155deg,' + t[0] + ',' + t[1] + ')';
+  return '<div style="height:100%;background:#fff;border:1px solid #E0DACF;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 4px rgba(0,0,0,.08);">' +
+    '<div style="flex:0 0 52%;position:relative;background:' + grad + ';display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6mm;">' +
+      '<span style="position:absolute;top:5mm;left:6mm;font:300 16pt \'Varela Round\',\'Nunito\';color:rgba(255,255,255,.68);">' + el.no + '</span>' +
+      '<span style="position:absolute;top:5mm;right:6mm;font:300 16pt \'Noto Sans TC\';color:rgba(255,255,255,.85);letter-spacing:.06em;">' + el.zh + '</span>' +
+      '<div style="font:900 56pt/1 \'Varela Round\',\'Nunito\';color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.18);">' + el.sym + '</div>' +
+      '<div style="font:300 13pt \'Varela Round\',\'Nunito\';color:rgba(255,255,255,.74);letter-spacing:.1em;margin-top:2mm;">' + el.eng + '</div>' +
+    '</div>' +
+    '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5mm 6mm;background:#fff;">' +
+      '<div style="font:500 11pt \'Noto Sans TC\';white-space:nowrap;padding:3px 14px;border-radius:10px;background:' + t[2] + ';color:' + t[1] + ';margin-bottom:4mm;">' + m.emoji + ' ' + m.name + '</div>' +
+      '<div style="width:24px;height:2px;border-radius:2px;background:' + t[0] + ';margin-bottom:4mm;"></div>' +
+      '<div style="font:700 19pt/1.5 \'Noto Serif TC\';color:#2A2420;text-align:center;">' + parts[0] + (parts[1] || '') + '</div>' +
+    '</div></div>';
+}
+
+function pBack(el) {
+  var t = PAL[el.type];
+  var parts = el.title.split('<br>');
+  var vt = el.verse, vr = '';
+  var i = el.verse.indexOf('\n—');
+  if (i !== -1) { vt = el.verse.slice(0, i); vr = el.verse.slice(i + 1); }
+  return '<div style="height:100%;background:#fff;border:1px solid #E0DACF;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 4px rgba(0,0,0,.08);">' +
+    '<div style="background:' + t[2] + ';padding:5mm 6mm 4mm;display:flex;align-items:center;gap:3mm;">' +
+      '<div style="width:13mm;height:13mm;flex-shrink:0;background:' + t[0] + ';border-radius:8px;display:flex;align-items:center;justify-content:center;font:900 17pt \'Varela Round\',\'Nunito\';color:#fff;">' + el.sym + '</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font:700 13pt/1.3 \'Noto Serif TC\';color:#2A2420;">' + parts[0] + (parts[1] || '') + '</div>' +
+        '<div style="font:400 9pt \'Varela Round\';color:#A0968C;margin-top:1px;">' + el.zh + ' · ' + el.eng + ' · ' + el.no + '</div>' +
+      '</div>' +
+      (el.person ? '<div style="font:700 10pt \'Noto Serif TC\';color:' + t[1] + ';flex-shrink:0;">📖 ' + el.person + '</div>' : '') +
+    '</div>' +
+    '<div style="flex:1;padding:5mm 6mm 6mm;display:flex;flex-direction:column;">' +
+      '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1mm;">適合對象</div>' +
+      '<div style="font:400 11.5pt/1.55 \'Noto Sans TC\';color:#6B6358;margin-bottom:3mm;">' + el.target + '</div>' +
+      '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1mm;">科學特性</div>' +
+      '<div style="font:400 11.5pt/1.55 \'Noto Sans TC\';color:#6B6358;margin-bottom:3mm;">' + el.sci + '</div>' +
+      '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1mm;">屬靈特質</div>' +
+      '<div style="font:400 11.5pt/1.55 \'Noto Sans TC\';color:#4A443C;margin-bottom:3mm;">' + el.sp + '</div>' +
+      '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1mm;">留意</div>' +
+      '<div style="font:italic 400 11.5pt/1.55 \'Noto Sans TC\';color:#8C8377;margin-bottom:3mm;">' + el.weak + '</div>' +
+      '<div style="margin-top:auto;background:' + t[2] + ';border-radius:7px;padding:3mm 4mm;font:400 11pt/1.6 \'Noto Serif TC\';color:' + t[1] + ';">' + vt +
+        '<span style="display:block;font-size:9pt;color:#A0968C;margin-top:1mm;">' + vr + '</span>' +
+      '</div>' +
+    '</div></div>';
+}
+
+function openPrintWindow(html) {
+  var w = window.open('', '_blank');
+  if (!w) { alert('請允許彈出視窗以開啟列印頁面'); return; }
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+}
+
+function printCustomCard() {
+  var el = customEl(false);
+  if (!el.sym || !el.zh) {
+    alert('請至少填寫「元素符號」與「中文名」再列印。');
+    return;
+  }
+  var body = printDocHead('我的元素卡 · 列印') +
+    '<div class="tip">左為正面、右為背面 · 沿外框裁切後對折即為雙面卡（Ctrl/⌘+P 列印或存成 PDF）</div>' +
+    printSheet(pFront(el) + pFront(el) + pBack(el) + pBack(el),
+      {t:'我設計的元素卡', s:'左為正面、右為背面 · 沿外框裁切後對折'}) +
+    '</body></html>';
+  openPrintWindow(body);
+}
+
+/* ── 範例版：a fully filled sample card showing how to complete each field ── */
+
+const SAMPLE_CUSTOM = {
+  sym:'Mg', no:12, zh:'鎂', eng:'Magnesium', type:'action',
+  title:'點燃盼望的<br>帶光者', person:'司提反',
+  target:'願意在低谷中先點燃氣氛、帶來盼望的人',
+  sci:'燃燒時發出耀眼白光、是葉綠素的核心、輕盈卻能量驚人',
+  sp:'願意在黑暗中先燃燒自己發出光，照亮整個群體；也像葉綠素的核心，默默把陽光轉成養分供應大家。',
+  weak:'發光是你的恩賜；學習也讓自己被光照、接受別人的供應，火才能燒得更久。',
+  verse:'你們是世上的光。城造在山上，是不能隱藏的。\n—馬太福音 5:14'
+};
+
+function printExampleTemplate() {
+  var el = SAMPLE_CUSTOM;
+  var body = printDocHead('元素卡 · 範例版') +
+    '<div class="tip">這是填寫示範（非正式卡）· 給找不到適合元素的人參考怎麼填</div>' +
+    printSheet(pFront(el) + pBack(el),
+      {t:'範例版 · 參考怎麼填', s:'這是示範用的「鎂 Mg」，看看每一欄可以怎麼寫'}) +
+    '</body></html>';
+  openPrintWindow(body);
+}
+
+/* ── 空白版：blank handwriting template ── */
+
+// small grey caption (sits beside/above the writing area, never on it)
+function bCap(text) {
+  return '<span style="font:400 8.5pt \'Noto Sans TC\';color:#B3A99C;white-space:nowrap;">' + text + '</span>';
+}
+// label + empty underline on one row (label left, blank line fills the rest)
+function bLineField(label) {
+  return '<div style="display:flex;align-items:flex-end;gap:2mm;width:100%;">' +
+    bCap(label) +
+    '<span style="flex:1;border-bottom:1px dashed #C9C1B3;height:5.5mm;"></span></div>';
+}
+// a standalone empty writing line
+function bLine() {
+  return '<div style="border-bottom:1px dashed #C9C1B3;height:5.5mm;"></div>';
+}
+
+function blankFront() {
+  return '<div style="height:100%;background:#fff;border:1px solid #C9C1B3;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;">' +
+    '<div style="flex:0 0 52%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8mm 6mm 6mm;border-bottom:1px dashed #DBD4C7;">' +
+      // top corners: 原子序 / 中文 — caption + short blank line, away from center
+      '<div style="position:absolute;top:5mm;left:6mm;right:6mm;display:flex;justify-content:space-between;gap:5mm;">' +
+        '<span style="display:flex;align-items:flex-end;gap:1.5mm;">' + bCap('原子序') + '<span style="display:inline-block;width:13mm;border-bottom:1px dashed #C9C1B3;height:4.5mm;"></span></span>' +
+        '<span style="display:flex;align-items:flex-end;gap:1.5mm;">' + bCap('中文名') + '<span style="display:inline-block;width:16mm;border-bottom:1px dashed #C9C1B3;height:4.5mm;"></span></span>' +
+      '</div>' +
+      // symbol: caption above, empty box below
+      '<div style="text-align:center;">' +
+        '<div style="margin-bottom:2mm;">' + bCap('符號') + '</div>' +
+        '<div style="width:30mm;height:30mm;border:2px dashed #C9C1B3;border-radius:10px;margin:0 auto;"></div>' +
+      '</div>' +
+      // english name: caption + blank line
+      '<div style="width:78%;margin:5mm auto 0;">' + bLineField('英文名') + '</div>' +
+    '</div>' +
+    '<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:5mm 7mm;gap:4mm;">' +
+      '<div style="text-align:center;font:500 10pt \'Noto Sans TC\';color:#8C8377;">□ 🔥行動　□ 🏛️支撐　□ 🌿連結　□ 🕊️穩定</div>' +
+      '<div>' +
+        '<div style="margin-bottom:1.5mm;">' + bCap('屬靈稱號') + '</div>' +
+        bLine() + '<div style="height:2mm;"></div>' + bLine() +
+      '</div>' +
+    '</div></div>';
+}
+
+function blankBack() {
+  function sec(label, rows) {
+    var h = '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1.5mm;">' + label + '</div>';
+    for (var i = 0; i < rows; i++) h += '<div style="border-bottom:1px dashed #D2CABC;height:5.5mm;"></div>';
+    return '<div style="margin-bottom:3mm;">' + h + '</div>';
+  }
+  return '<div style="height:100%;background:#fff;border:1px solid #C9C1B3;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;">' +
+    '<div style="padding:5mm 6mm 4mm;display:flex;align-items:flex-end;gap:3mm;border-bottom:1px dashed #DBD4C7;">' +
+      '<div style="width:13mm;height:13mm;flex-shrink:0;border:2px dashed #C9C1B3;border-radius:8px;"></div>' +
+      '<div style="flex:1;">' +
+        '<div style="font:400 8pt \'Noto Sans TC\';color:#B3A99C;margin-bottom:1mm;">屬靈稱號／中文・英文・對應人物</div>' +
+        '<div style="border-bottom:1px dashed #C9C1B3;height:5mm;"></div></div>' +
+    '</div>' +
+    '<div style="flex:1;padding:4mm 6mm 5mm;display:flex;flex-direction:column;">' +
+      sec('適合對象', 1) + sec('科學特性', 1) + sec('屬靈特質', 2) + sec('留意', 1) +
+      '<div style="margin-top:auto;border:1px dashed #D2CABC;border-radius:7px;padding:3mm 4mm;">' +
+        '<div style="font:700 9pt \'Noto Sans TC\';letter-spacing:.14em;color:#B3A99C;margin-bottom:1.5mm;">經文</div>' +
+        '<div style="border-bottom:1px dashed #D2CABC;height:5mm;"></div>' +
+        '<div style="border-bottom:1px dashed #D2CABC;height:5mm;margin-top:2mm;"></div>' +
+      '</div>' +
+    '</div></div>';
+}
+
+function printBlankTemplate() {
+  var rows = blankFront() + blankBack() + blankFront() + blankBack();
+  var body = printDocHead('空白元素卡 · 手寫版') +
+    '<div class="tip">每行為一張卡（左正面、右背面）· 列印後沿外框裁切，手寫填入即可</div>' +
+    printSheet(rows, {t:'空白版 · 手寫', s:'每行為一張卡（左正面、右背面）· 裁切後手寫填入'}) +
+    '</body></html>';
+  openPrintWindow(body);
+}
+
+/* ═══════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════ */
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeModal(); closeDesigner(); }
+});
 
 render();

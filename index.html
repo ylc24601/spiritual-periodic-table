@@ -20,6 +20,7 @@
   <button id="sw-grid"  class="sw-btn" onclick="setLayout('grid')">卡片排列</button>
   <div class="sw-sep"></div>
   <button class="sw-btn sw-print" onclick="openPrint()">🖨️ 列印卡片</button>
+  <button class="sw-btn sw-custom" onclick="openDesigner()">✏️ 自製元素卡</button>
 </div>
 
 <!-- ── PAGE ── -->
@@ -76,6 +77,26 @@
       </div>
     </div>
     <div class="modal-hint">點擊卡片翻面 · 點擊空白處關閉</div>
+  </div>
+</div>
+
+<!-- ── CUSTOM CARD DESIGNER ── -->
+<div id="designer" onclick="closeDesigner()">
+  <div id="designer-inner" onclick="event.stopPropagation()">
+    <div id="designer-head">
+      <div class="dz-head-title">
+        <span class="dz-head-icon">✏️</span>
+        <div>
+          <div class="dz-head-h1">自製元素卡</div>
+          <div class="dz-head-sub">找不到適合你的元素？親手設計一張屬於你的吧</div>
+        </div>
+      </div>
+      <button class="dz-close" onclick="closeDesigner()" aria-label="關閉">✕</button>
+    </div>
+    <div id="designer-body">
+      <div id="designer-form"></div>
+      <div id="designer-preview"></div>
+    </div>
   </div>
 </div>
 
