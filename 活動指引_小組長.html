@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>活動指引：小組長專用</title>
+<style>
+  :root {
+    --action-main: #FF7F6B;
+    --struct-main: #F0A840;
+    --rel-main:    #4EC8B0;
+    --stab-main:   #8AAEE0;
+    --board:       #1c2340;
+    --board-text:  #f0ede4;
+    --bg:          #f5f3ef;
+    --ink:         #2a2e3a;
+    --ink-soft:    #5a6072;
+  }
+
+  @page {
+    size: A4;
+    margin: 16mm 15mm 18mm 15mm;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    color: var(--ink);
+    line-height: 1.75;
+    font-size: 11pt;
+    margin: 0;
+    background: var(--bg);
+  }
+
+  /* 螢幕檢視：模擬 A4 紙張置中，留白；列印時關閉，改由 @page 控制邊距 */
+  .page {
+    max-width: 210mm;
+    margin: 24px auto;
+    padding: 18mm 16mm;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,.10);
+    border-radius: 4px;
+  }
+  @media print {
+    body { background: #fff; }
+    .page {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+      border-radius: 0;
+    }
+  }
+
+  h1, h2, h3 { font-family: "Noto Serif TC", "Songti TC", serif; }
+
+  /* ---- Cover header ---- */
+  .cover {
+    background: var(--board);
+    color: var(--board-text);
+    border-radius: 14px;
+    padding: 30px 34px;
+    margin-bottom: 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: "";
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(240,168,64,.22), transparent 70%);
+  }
+  .cover .eyebrow {
+    font-size: 10pt;
+    letter-spacing: 3px;
+    color: var(--struct-main);
+    margin: 0 0 6px;
+  }
+  .cover h1 {
+    margin: 0 0 10px;
+    font-size: 25pt;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .cover .sub {
+    margin: 0;
+    font-size: 11pt;
+    color: #c9cfe0;
+  }
+  .cover .meta {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    font-size: 9.5pt;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.18);
+    color: var(--board-text);
+  }
+
+  /* ---- type swatches ---- */
+  .types {
+    display: flex;
+    gap: 10px;
+    margin: 0 0 26px;
+  }
+  .type {
+    flex: 1;
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: #fff;
+    text-align: center;
+  }
+  .type b { display: block; font-size: 12pt; }
+  .type span { font-size: 8.5pt; opacity: .9; }
+  .t-action { background: var(--action-main); }
+  .t-struct { background: var(--struct-main); }
+  .t-rel    { background: var(--rel-main); }
+  .t-stab   { background: var(--stab-main); }
+
+  /* ---- section headings ---- */
+  h2 {
+    font-size: 15pt;
+    color: var(--board);
+    margin: 26px 0 12px;
+    padding-bottom: 7px;
+    border-bottom: 2px solid var(--struct-main);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: var(--board);
+    color: var(--struct-main);
+    font-size: 11pt;
+    flex: none;
+  }
+  h3 {
+    font-size: 12.5pt;
+    color: var(--rel-main);
+    margin: 18px 0 6px;
+  }
+
+  p { margin: 6px 0; }
+
+  ul, ol { margin: 6px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+
+  strong { color: var(--action-main); font-weight: 700; }
+
+  /* ---- table ---- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 10pt;
+  }
+  th {
+    background: var(--board);
+    color: var(--board-text);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 500;
+  }
+  th:first-child { border-top-left-radius: 8px; }
+  th:last-child  { border-top-right-radius: 8px; }
+  td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #e6e2da;
+  }
+  tr:nth-child(even) td { background: var(--bg); }
+
+  /* ---- task cards ---- */
+  .tasks {
+    display: flex;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .task {
+    flex: 1;
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 14px;
+    border-top: 4px solid var(--rel-main);
+  }
+  .task .k { font-size: 18pt; font-weight: 700; color: var(--rel-main); line-height: 1; }
+  .task b { display: block; margin: 6px 0 4px; color: var(--board); font-size: 11.5pt; }
+  .task span { font-size: 9.5pt; color: var(--ink-soft); }
+
+  /* ---- callout ---- */
+  .callout {
+    background: #fff8ec;
+    border-left: 4px solid var(--struct-main);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 10.5pt;
+  }
+  .callout.quote {
+    background: #eef6f3;
+    border-left-color: var(--rel-main);
+    font-style: italic;
+  }
+
+  .verse {
+    text-align: center;
+    color: var(--ink-soft);
+    font-family: "Noto Serif TC", serif;
+    font-size: 11pt;
+    margin: 8px 0 4px;
+  }
+
+  .avoid-page-break { break-inside: avoid; }
+  h2 { break-after: avoid; }
+
+  footer {
+    margin-top: 30px;
+    padding-top: 12px;
+    border-top: 1px solid #e0dcd3;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 9pt;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <p class="eyebrow">小 組 長 專 用 指 引</p>
+    <h1>上帝的化學配方<br>屬靈元素週期表</h1>
+    <p class="sub">社青光鹽 × 周五團契　聯合聚會</p>
+    <div class="meta">
+      <span class="chip">⏱ 60 分鐘</span>
+      <span class="chip">🎴 投影片＋實體卡片互動</span>
+      <span class="chip">💬 小組分享</span>
+      <span class="chip">📖 林前 12:14, 18</span>
+    </div>
+  </div>
+
+  <div class="types">
+    <div class="type t-action"><b>行動型</b><span>熱情・推動</span></div>
+    <div class="type t-struct"><b>支撐型</b><span>承載・穩固</span></div>
+    <div class="type t-rel"><b>連結型</b><span>連結・調和</span></div>
+    <div class="type t-stab"><b>穩定型</b><span>安靜・恆定</span></div>
+  </div>
+
+  <h2><span class="num">◎</span>活動目標</h2>
+  <ul>
+    <li>幫助小組成員看到教會中不同性格與事奉角色的美好。</li>
+    <li>讓每個參與的長輩與社青都有機會分享、感受到被看見。</li>
+    <li>使用「科學類比」幫助分享彼此的特質與想法。</li>
+  </ul>
+
+  <h2><span class="num">1</span>小組長的三個任務</h2>
+  <div class="tasks">
+    <div class="task">
+      <div class="k">①</div>
+      <b>先示範</b>
+      <span>分享輪一開始，你自己先講，破冰、降低壓力。</span>
+    </div>
+    <div class="task">
+      <div class="k">②</div>
+      <b>顧時間</b>
+      <span>每人快到時間輕點一下提醒，不要讓同一個人講太長。</span>
+    </div>
+    <div class="task">
+      <div class="k">③</div>
+      <b>顧長輩</b>
+      <span>主動點長輩開口，確保人人都被聽見。</span>
+    </div>
+  </div>
+
+  <h2><span class="num">⏱</span>全場時間軸（60 分鐘速查）</h2>
+  <table>
+    <thead>
+      <tr><th>時間</th><th>段落</th><th>主導</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0–8′</td><td>開場＋四型介紹</td><td>主帶</td></tr>
+      <tr><td>8–16′</td><td>選牌 1–2 張（<b>記得翻面讀說明</b>）</td><td>小組長顧桌</td></tr>
+      <tr><td>16–40′</td><td><b>小組分享</b>（主帶控時、時間到統一喊停）</td><td>小組長帶・主帶控時</td></tr>
+      <tr><td>40–44′</td><td>主帶說明配對原則＋示範 1–3 組化合物</td><td>主帶</td></tr>
+      <tr><td>44–54′</td><td>各組配對・把配到的卡貼海報</td><td>小組長帶</td></tr>
+      <tr><td>54–60′</td><td>祝福禱告</td><td>主帶</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">2</span>事前準備</h2>
+  <ol>
+    <li>確認場地投影設備（投放活動網頁）與麥克風音響是否正常。</li>
+    <li>準備實體卡片，一組 2–3 套（可討論）。</li>
+    <li>若使用實體卡片，事先將卡片分成 4 種類型，方便參與者抽取。</li>
+    <li>準備筆記紙、便條或討論題目卡。</li>
+  </ol>
+
+  <h2><span class="num">3</span>活動流程建議</h2>
+  <p style="color:var(--ink-soft);font-size:10pt;">分鐘數對應上方速查表，總和為 60 分鐘。</p>
+
+  <h3>① 開場（約 4 分鐘）</h3>
+  <ul>
+    <li>自我介紹與主題說明。</li>
+    <li>讀出核心經文：哥林多前書 12:14, 18。</li>
+    <li>介紹今天活動：「我們要用週期表和化學配方，來看見教會中的每一位弟兄姊妹。」</li>
+  </ul>
+
+  <h3>② 介紹屬靈元素類型（約 4 分鐘）</h3>
+  <ul>
+    <li>介紹四種屬靈類型：行動型、支撐型、連結型、穩定型。</li>
+    <li>用一到兩張代表性元素卡示例說明科學特性與屬靈比喻。</li>
+    <li>介紹 11 組化合物比喻（只是引導，不是全部），例如 NaCl、H₂O、AgCl、AuCu。</li>
+  </ul>
+  <div class="callout">
+    也介紹 1 組混合物——空氣（N＋O＋He）：惰性的氦不與人鍵結，卻和氮、氧一起維繫呼吸。<strong>穩定型／安靜的人不需要「融合」才有價值，安靜同在就是教會的穩定力量。</strong>
+  </div>
+  <p>重點：不同類型沒有高低，只有互補。</p>
+
+  <h3>③ 選牌與小組分享（約 32 分鐘：選牌 8＋分享 24）</h3>
+  <ul>
+    <li>選牌：每人選 1–2 張最像自己（或最像身邊人）的元素卡，<strong>記得翻面讀說明</strong>。</li>
+    <li><strong>分享聚焦兩點</strong>（每人約 3 分鐘）：
+      <br>① 最有共鳴——這張卡哪一點讓你覺得「對，就是我」？
+      <br>② 最意外——翻面說明裡，哪一點是你沒想到的？</li>
+    <li>控時：6 人 × 約 3 分鐘 ≈ 18 分鐘，其餘留作緩衝；接近時提醒「再 2 位」。</li>
+    <li><strong>這段由主帶統一控時</strong>：小組長帶組內輪流分享，但何時結束由主帶掌握；<strong>時間到主帶會喊停、收齊全場</strong>，再進入下一段配對說明。</li>
+  </ul>
+  <p><b style="color:var(--board)">引導問題：</b></p>
+  <ul>
+    <li>這張卡片的特質你是否曾經在自己身上看到？</li>
+    <li>你曾經在工作、家庭與教會團契中扮演這樣的角色？</li>
+    <li>你覺得什麼樣的人才是你的最佳搭檔？</li>
+  </ul>
+
+  <h3>④ 化合物與混合物配對（約 14 分鐘）</h3>
+  <ul>
+    <li><strong>先由主帶統一說明（約 4 分鐘）</strong>：分享時間到、主帶喊停收齊全場後，主帶先說明「配對」的原則，並挑 <strong>1–3 組化合物</strong>做示範（例如 NaCl＝接納、H₂O＝活水），讓大家明白怎麼把人和化合物對起來。</li>
+    <li>化合物與混合物是<strong>示範與引導</strong>，不是規定每個人都要被配成一組。</li>
+    <li><strong>各組自由配對（約 10 分鐘）</strong>：<strong>不需要把全部化合物與混合物都湊到同一張海報上</strong>；組裡<strong>有配對到的，再把那張卡貼到海報對應的格子即可</strong>，沒配到的留白也沒關係。</li>
+  </ul>
+  <div class="callout">
+    <strong>怎麼貼、貼成什麼樣子，由各組自己決定</strong>——這正代表不同的弟兄姊妹在一起團契時，會激盪出<strong>不一樣的「化學反應」</strong>，每一組的海報都會長得不一樣，那就是你們這組獨特的組合。
+  </div>
+  <div class="callout">
+    <strong>若有人的卡配不到任何化合物</strong>（例如氦 He）：這正是「混合物」要說的——有些人不靠與誰結合，而是安靜的同在就讓群體穩定。請肯定他，不要讓他覺得自己「落單」。
+  </div>
+  <ul>
+    <li>浮貼時寫上名字（卡片可掀起看說明），並分享為什麼這樣配、這樣貼。</li>
+  </ul>
+  <p><b style="color:var(--board)">問題引導：</b></p>
+  <ul>
+    <li>哪一組化合物最打動你？為什麼？</li>
+    <li>這個組合在現實教會中對應到哪些人？</li>
+    <li>你在哪一段生命中遇見過這樣的搭檔？</li>
+  </ul>
+
+  <h3>⑤ 結論與禱告（約 6 分鐘）</h3>
+  <ul>
+    <li>回到核心經文與主題訊息：「一個身體多個肢體」「你們是世上的鹽」。</li>
+    <li>時間如果夠，請各組派一員分享該組的海報（兩位組員協助拿海報），讓大家更認識彼此、欣賞差異。</li>
+    <li>進行簡短祝福禱告。</li>
+  </ul>
+
+  <h2><span class="num">4</span>小組長提醒</h2>
+  <div class="avoid-page-break">
+  <ul>
+    <li><b>兼顧兩個世代：</b>
+      <ul>
+        <li>對長輩：多肯定穩定型、支撐型的價值與經歷。</li>
+        <li>對社青：多肯定行動型、連結型的熱情與創意。</li>
+      </ul>
+    </li>
+    <li>若有人害羞不願分享，可先用「我自己覺得這張卡特質很像誰？」來降低壓力。</li>
+    <li>若討論時間不夠，可先聚焦「我最像的元素」與「我最需要的屬靈夥伴」兩個問題。</li>
+    <li>若整體時間吃緊，化合物環節可精簡到「全組挑一組、互相講一句怎麼互補」即可；<strong>但結尾禱告不能砍</strong>。</li>
+  </ul>
+  </div>
+
+  <h2><span class="num">5</span>問題引導範例（備用）</h2>
+  <p style="color:var(--ink-soft);font-size:10pt;">流程裡的提問若不夠，可從這裡補充。</p>
+  <ul>
+    <li>你喜歡自己在團隊裡最常扮演的角色嗎？</li>
+    <li>我們教會裡有誰像這張元素卡？他／她帶給團隊什麼幫助？</li>
+    <li>當不同特質的人一起服事，你覺得最大的美好是什麼？</li>
+  </ul>
+
+  <h2><span class="num">!</span>可能注意事項</h2>
+  <div class="avoid-page-break">
+  <div class="callout quote">若有人怕被貼標籤：「卡是探索的起點，不是結論，你可以同時像好幾個元素。」</div>
+  <div class="callout quote">若有人說「我覺得我很像一個元素，但不確定這是不是很好」：「每個元素都有它的用途，重要的是你在神的安排中被需要。」</div>
+  <ul>
+    <li>避免比較：「你比他更適合」「這種人比較好」不是重點。</li>
+    <li>可提醒：「我們不是要改變別人，而是理解、尊重並欣賞彼此的恩賜。」</li>
+  </ul>
+  </div>
+
+  <h2><span class="num">♥</span>結尾提醒</h2>
+  <div class="avoid-page-break">
+  <ul>
+    <li>這個活動不是要把人分成固定類型，而是幫助我們體會：每個人在教會裡都有位置，且差異是神的設計。</li>
+    <li>鼓勵大家回去後互相說一句感謝、分享一句你欣賞的特質。</li>
+  </ul>
+  <p class="verse">「身子原不是一個肢體，乃是許多肢體……<br>但如今，神隨自己的意思把肢體俱各安排在身上了。」<br>—— 哥林多前書 12:14, 18</p>
+  </div>
+
+  <footer>上帝的化學配方：屬靈元素週期表　·　小組長指引　·　社青光鹽 × 周五團契</footer>
+
+</div>
+</body>
+</html>

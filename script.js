@@ -564,6 +564,20 @@ function renderModal() {
    RENDER — COMPOUND SECTION
 ═══════════════════════════════════════════════════════ */
 
+// Unified list of compounds + mixtures; index aligns with the rendered grid
+// so openCompoundModal(idx) can look the item up.
+const CITEMS = [];
+
+function buildCItems() {
+  CITEMS.length = 0;
+  COMPOUNDS.forEach(function(cp) {
+    CITEMS.push({ kind:'compound', f:cp.f, pun:cp.pun, desc:cp.desc, verse:cp.verse });
+  });
+  MIXTURES.forEach(function(mx) {
+    CITEMS.push({ kind:'mixture', f:mx.f, pun:mx.pun, desc:mx.desc, verse:mx.verse });
+  });
+}
+
 function renderCompounds() {
   const t = COMP_THEME[appStyle];
   const section = document.getElementById('compound-section');
@@ -573,18 +587,25 @@ function renderCompounds() {
   const titleEl = document.getElementById('section-title-inner');
   titleEl.innerHTML =
     '<div style="flex:1; height:1px; background:' + t.rule + ';"></div>' +
-    '<span style="font:600 14px \'Noto Serif TC\'; letter-spacing:.1em; color:' + t.head + '; white-space:nowrap;">⚗ 化合物團契 · Compound Fellowship</span>' +
+    '<span style="font:600 14px \'Noto Serif TC\'; letter-spacing:.1em; color:' + t.head + '; white-space:nowrap;">⚗ 化合物與混合物團契 · Compound &amp; Mixture Fellowship</span>' +
     '<div style="flex:1; height:1px; background:' + t.rule + ';"></div>';
 
+  buildCItems();
+
+  var dash = appStyle === 'lively' ? 'rgba(138,174,224,.5)' : '#C9D4E8';
   const cgrid = document.getElementById('cgrid');
   let html = '';
 
-  COMPOUNDS.forEach(function(cp, idx) {
+  CITEMS.forEach(function(cp, idx) {
+    var isMix = cp.kind === 'mixture';
     var a = PAL[TYPE_ORDER[idx % 4]][0];
     var b = PAL[TYPE_ORDER[(idx + 2) % 4]][0];
+    var brd = isMix ? '1px dashed ' + dash : '1px solid ' + t.border;
     html +=
-      '<div style="position:relative; overflow:hidden; background:' + t.card + '; border:1px solid ' + t.border + '; border-radius:10px; padding:18px 17px 15px;">' +
-        '<div style="position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,' + a + ',' + b + ');"></div>' +
+      '<div onclick="openCompoundModal(' + idx + ')" style="cursor:pointer; position:relative; overflow:hidden; background:' + t.card + '; border:' + brd + '; border-radius:10px; padding:18px 17px 15px; transition:transform .18s ease, box-shadow .18s ease;" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 10px 24px rgba(0,0,0,.22)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'\'">' +
+        (isMix
+          ? '<div style="position:absolute; top:11px; right:12px; font:600 10px \'Noto Sans TC\'; letter-spacing:.06em; color:' + t.head + '; background:' + t.verseBg + '; border:1px dashed ' + dash + '; border-radius:20px; padding:2px 9px;">🌬 混合物</div>'
+          : '<div style="position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,' + a + ',' + b + ');"></div>') +
         '<div style="font:900 28px \'Varela Round\',\'Nunito\'; color:' + t.formula + '; margin:4px 0 1px;">' + cp.f + '</div>' +
         '<div style="font:700 14px \'Noto Serif TC\'; color:' + t.pun + '; margin-bottom:10px;">' + cp.pun + '</div>' +
         '<div style="font:400 12px/1.7 \'Noto Sans TC\'; color:' + t.desc + '; margin-bottom:11px;">' + cp.desc + '</div>' +
@@ -592,25 +613,43 @@ function renderCompounds() {
       '</div>';
   });
 
-  // Mixture sub-section — coexist without bonding (full-width heading + dashed cards)
-  var dash = appStyle === 'lively' ? 'rgba(138,174,224,.5)' : '#C9D4E8';
-  html +=
-    '<div style="grid-column:1/-1; display:flex; align-items:center; gap:14px; margin:14px 0 0;">' +
-      '<div style="flex:1; height:1px; background:' + t.rule + ';"></div>' +
-      '<span style="font:600 13px \'Noto Serif TC\'; letter-spacing:.08em; color:' + t.head + '; white-space:nowrap;">🌬 混合物 · Mixture（不鍵結，卻一起維繫生命）</span>' +
-      '<div style="flex:1; height:1px; background:' + t.rule + ';"></div>' +
-    '</div>';
-  MIXTURES.forEach(function(mx) {
-    html +=
-      '<div style="position:relative; overflow:hidden; background:' + t.card + '; border:1px dashed ' + dash + '; border-radius:10px; padding:18px 17px 15px;">' +
-        '<div style="font:900 28px \'Varela Round\',\'Nunito\'; color:' + t.formula + '; margin:4px 0 1px;">' + mx.f + '</div>' +
-        '<div style="font:700 14px \'Noto Serif TC\'; color:' + t.pun + '; margin-bottom:10px;">' + mx.pun + '</div>' +
-        '<div style="font:400 12px/1.7 \'Noto Sans TC\'; color:' + t.desc + '; margin-bottom:11px;">' + mx.desc + '</div>' +
-        '<div style="font:400 11px/1.6 \'Noto Serif TC\'; color:' + t.verseTx + '; background:' + t.verseBg + '; border-radius:7px; padding:8px 11px;">' + mx.verse + '</div>' +
-      '</div>';
-  });
-
   cgrid.innerHTML = html;
+}
+
+/* ── COMPOUND / MIXTURE ENLARGE MODAL ── */
+
+function openCompoundModal(idx) {
+  const cp = CITEMS[idx];
+  if (!cp) return;
+  const t = COMP_THEME[appStyle];
+  const isL = appStyle === 'lively';
+  const isMix = cp.kind === 'mixture';
+  var dash = isL ? 'rgba(138,174,224,.5)' : '#C9D4E8';
+  var a = PAL[TYPE_ORDER[idx % 4]][0];
+  var b = PAL[TYPE_ORDER[(idx + 2) % 4]][0];
+  var modalBg = isL ? '#222a4d' : '#fff';
+  var closeColor = isL ? 'rgba(240,237,228,.6)' : '#A89F92';
+
+  const inner = document.getElementById('cmodal-inner');
+  inner.style.cssText =
+    'position:relative; overflow:hidden; max-height:88vh; overflow-y:auto; background:' + modalBg +
+    '; border:' + (isMix ? '1.5px dashed ' + dash : '1px solid ' + t.border) +
+    '; border-radius:18px; padding:42px 40px 36px; box-shadow:0 30px 70px rgba(0,0,0,.5);';
+  inner.innerHTML =
+    (isMix
+      ? '<div style="position:absolute; top:18px; left:24px; font:600 12px \'Noto Sans TC\'; letter-spacing:.06em; color:' + t.head + '; background:' + t.verseBg + '; border:1px dashed ' + dash + '; border-radius:20px; padding:3px 12px;">🌬 混合物 · 不鍵結，卻一起維繫生命</div>'
+      : '<div style="position:absolute; top:0; left:0; right:0; height:6px; background:linear-gradient(90deg,' + a + ',' + b + ');"></div>') +
+    '<button onclick="closeCompoundModal()" aria-label="關閉" style="position:absolute; top:14px; right:16px; width:30px; height:30px; border:none; background:transparent; color:' + closeColor + '; font-size:20px; cursor:pointer; line-height:1;">✕</button>' +
+    '<div style="font:900 56px/1.1 \'Varela Round\',\'Nunito\'; color:' + t.formula + '; margin:' + (isMix ? '30px' : '14px') + ' 0 6px;">' + cp.f + '</div>' +
+    '<div style="font:700 24px \'Noto Serif TC\'; color:' + t.pun + '; margin-bottom:20px;">' + cp.pun + '</div>' +
+    '<div style="font:400 17px/1.9 \'Noto Sans TC\'; color:' + t.desc + '; margin-bottom:20px;">' + cp.desc + '</div>' +
+    '<div style="font:400 15px/1.8 \'Noto Serif TC\'; color:' + t.verseTx + '; background:' + t.verseBg + '; border-radius:10px; padding:14px 18px;">' + cp.verse + '</div>';
+
+  document.getElementById('cmodal').style.display = 'flex';
+}
+
+function closeCompoundModal() {
+  document.getElementById('cmodal').style.display = 'none';
 }
 
 /* ═══════════════════════════════════════════════════════
