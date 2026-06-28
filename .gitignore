@@ -1,0 +1,10 @@
+# 編輯器／個人工作區設定
+Periodic table.code-workspace
+.vscode/
+
+# 設計參考／交付快照（非上線程式，內容會過時，以 script.js 為準）
+ds/
+design_handoff_spiritual_periodic_table/
+
+# 系統檔
+.DS_Store
