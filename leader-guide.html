@@ -42,7 +42,9 @@
     border-radius: 4px;
   }
   @media print {
-    body { background: #fff; }
+    /* 保留深色表頭/封面背景，否則淺色字會印不出來 */
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { background: #fff; font-size: 10.5pt; }
     .page {
       max-width: none;
       margin: 0;
@@ -50,6 +52,13 @@
       box-shadow: none;
       border-radius: 0;
     }
+    /* 避免段落、表格、卡片被切到跨頁 */
+    h2, h3 { break-after: avoid; }
+    table, thead, tr { break-inside: avoid; }
+    .callout, .task, .types, .tasks, li { break-inside: avoid; }
+    .cover { break-inside: avoid; }
+    /* 列印時關閉陰影/圓角等螢幕裝飾，省墨並更清晰 */
+    .cover { box-shadow: none; }
   }
 
   h1, h2, h3 { font-family: "Noto Serif TC", "Songti TC", serif; }
